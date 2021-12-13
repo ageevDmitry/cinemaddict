@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
 * Студент: [Дмитрий Агеев](https://up.htmlacademy.ru/ecmascript/16/user/797803).
-* Наставник: `Неизвестно`.
+* Наставник: [Магомед Кандаев](https://htmlacademy.ru/profile/magomedkandaev).
 
 ---
 
