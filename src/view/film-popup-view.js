@@ -26,7 +26,6 @@ const createCommentTemplate = (comment) => {
 
 const createFilmPopupViewTemplate = (film, comments, data) => {
 
-  // const {poster, title, originalTitle, rating, director, writers, actors, releaseDate, runtime, country, genres, description, ageLimit, isWatchlist, isWatched, isFavorite} = film;
   const {poster, title, originalTitle, rating, director, writers, actors, releaseDate, country, genres, description, ageLimit, isWatchlist, isWatched, isFavorite} = film;
 
   const runtime = 100;

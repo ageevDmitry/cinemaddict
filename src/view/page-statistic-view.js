@@ -1,78 +1,16 @@
 import Smart from './smart.js';
+import {Chart} from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-const createPageStatisticViewTemplate = () => {
-  // const BAR_HEIGHT = 50;
-  // const statisticCtx = document.querySelector('.statistic__chart');
-
-  // // Обязательно рассчитайте высоту canvas, она зависит от количества элементов диаграммы
-  // statisticCtx.height = BAR_HEIGHT * 5;
-
-  // const myChart = new Chart(statisticCtx, {
-  //   plugins: [ChartDataLabels],
-  //   type: 'horizontalBar',
-  //   data: {
-  //     labels: ['Sci-Fi', 'Animation', 'Fantasy', 'Comedy', 'TV Series'],
-  //     datasets: [{
-  //       data: [11, 8, 7, 4, 3],
-  //       backgroundColor: '#ffe800',
-  //       hoverBackgroundColor: '#ffe800',
-  //       anchor: 'start',
-  //     }],
-  //   },
-  //   options: {
-  //     plugins: {
-  //       datalabels: {
-  //         font: {
-  //           size: 20,
-  //         },
-  //         color: '#ffffff',
-  //         anchor: 'start',
-  //         align: 'start',
-  //         offset: 40,
-  //       },
-  //     },
-  //     scales: {
-  //       yAxes: [{
-  //         ticks: {
-  //           fontColor: '#ffffff',
-  //           padding: 100,
-  //           fontSize: 20,
-  //         },
-  //         gridLines: {
-  //           display: false,
-  //           drawBorder: false,
-  //         },
-  //         barThickness: 24,
-  //       }],
-  //       xAxes: [{
-  //         ticks: {
-  //           display: false,
-  //           beginAtZero: true,
-  //         },
-  //         gridLines: {
-  //           display: false,
-  //           drawBorder: false,
-  //         },
-  //       }],
-  //     },
-  //     legend: {
-  //       display: false,
-  //     },
-  //     tooltips: {
-  //       enabled: false,
-  //     },
-  //   },
-  // });
-
-  return (
-    `<section class="statistic">
+const createPageStatisticViewTemplate = () => (
+  `<section class="statistic">
     <p class="statistic__rank">
       Your rank
       <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-      <span class="statistic__rank-label">Movie buff</span>
+      <span class="statistic__rank-label">Movie Buff</span>
     </p>
 
-    <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
+    <form action="https:cho.htmlacademy.ru/" method="get" class="statistic__filters">
       <p class="statistic__filters-description">Show stats:</p>
 
       <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-all-time" value="all-time" checked>
@@ -107,33 +45,90 @@ const createPageStatisticViewTemplate = () => {
     </ul>
 
     <div class="statistic__chart-wrap">
-      <canvas class="statistic__chart" width="1000"></canvas>
+      <canvas class="statistic__chart" width="1000" height="250"></canvas>
     </div>
 
   </section>`
-  );
-};
+);
+
+const createChartElement = (statisticCtx) =>
+// const BAR_HEIGHT = 50;
+
+// Обязательно рассчитайте высоту canvas, она зависит от количества элементов диаграммы
+// statisticCtx.height = BAR_HEIGHT * 5;
+
+  new Chart(statisticCtx, {
+    plugins: [ChartDataLabels],
+    type: 'horizontalBar',
+    data: {
+      labels: ['Sci-Fi', 'Animation', 'Fantasy', 'Comedy', 'TV Series'],
+      datasets: [{
+        data: [11, 8, 7, 4, 3],
+        backgroundColor: '#ffe800',
+        hoverBackgroundColor: '#ffe800',
+        anchor: 'start',
+      }],
+    },
+    options: {
+      plugins: {
+        datalabels: {
+          font: {
+            size: 20,
+          },
+          color: '#ffffff',
+          anchor: 'start',
+          align: 'start',
+          offset: 40,
+        },
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: '#ffffff',
+            padding: 100,
+            fontSize: 20,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+          barThickness: 24,
+        }],
+        xAxes: [{
+          ticks: {
+            display: false,
+            beginAtZero: true,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+      },
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        enabled: false,
+      },
+    },
+  });
 
 export default class PageStatisticView extends Smart {
   constructor() {
     super();
 
-    // this._data = {
-    //   films,
-    //   dataFrom,
-    //   dataTo
-    // }
+    this._filmsChart = null;
 
-    // this._dateChangeHandler = this._dataChangeHadler.bind(this);
-
-    // this._setChart();
+    this._setCharts();
   }
-
 
   getTemplate() {
     return createPageStatisticViewTemplate();
   }
 
-  // removeElement();
-
+  _setCharts() {
+    const statisticCtx = this.getElement().querySelector('.statistic__chart');
+    this._filmsChart = createChartElement(statisticCtx);
+  }
 }
