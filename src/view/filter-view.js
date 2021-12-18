@@ -31,6 +31,7 @@ export default class FilterView extends AbstractView {
     this._currentFilterType = currentFilterType;
 
     this._filterTypeClickHandler = this._filterTypeClickHandler.bind(this);
+    this._statisticHandler = this._statisticHandler.bind(this);
   }
 
   getTemplate() {
@@ -42,9 +43,19 @@ export default class FilterView extends AbstractView {
     this._callback.filterTypeClick(evt.target.dataset.filterType);
   }
 
+  _statisticHandler(evt) {
+    evt.preventDefault();
+    this._callback.statisticClick();
+  }
+
   setFilterTypeClickHandler(callback) {
     this._callback.filterTypeClick = callback;
     this.getElement().querySelectorAll('.main-navigation__item')
       .forEach((element) => element.addEventListener('click', this._filterTypeClickHandler));
+  }
+
+  setStatisticClickHandler(callback) {
+    this._callback.statisticClick = callback;
+    this.getElement().querySelector('.main-navigation__additional').addEventListener('click', this._statisticHandler);
   }
 }

@@ -1,4 +1,3 @@
-import {nanoid} from 'nanoid';
 import {ESCAPE} from '../const.js';
 import FilmCardView from '../view/film-card-view.js';
 import FilmPopupView from '../view/film-popup-view.js';

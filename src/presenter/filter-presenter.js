@@ -13,6 +13,7 @@ export default class FilterPresenter {
 
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
+    this._handleStatisticRender = this._handleStatisticRender.bind(this);
 
     this._filmsModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
@@ -24,6 +25,7 @@ export default class FilterPresenter {
 
     this._filterComponent = new FilterView(filters, this._filterModel.getFilter());
     this._filterComponent.setFilterTypeClickHandler(this._handleFilterTypeChange);
+    this._filterComponent.setStatisticClickHandler(this._handleStatisticRender);
 
     if (prevFilterComponent === null) {
       render(this._filterContainer, this._filterComponent);
@@ -44,6 +46,10 @@ export default class FilterPresenter {
     }
 
     this._filterModel.setFilter(UpdateType.MAJOR, filterType);
+  }
+
+  _handleStatisticRender() {
+    this._filterModel.setFilter(UpdateType.STATISTIC, 'STATS');
   }
 
   _getFilters() {

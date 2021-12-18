@@ -6,6 +6,7 @@ import FilmsContainerView from '../view/films-container-view.js';
 import ButtonShowMoreView from '../view/button-show-more-view.js';
 import NoFilmsView from '../view/no-films-view.js';
 import LoadingView from '../view/loading.js';
+import PageStatisticView from '../view/page-statistic-view.js';
 import {render, remove} from '../utils/render.js';
 import {sortFilmsDate, sortFilmsRating} from '../utils/common.js';
 import {filter} from '../utils/filter.js';
@@ -30,6 +31,7 @@ export default class FilmsBoardPresenter {
     this._filmsListComponent = new FilmsListView();
     this._filmsContainerComponent = new FilmsContainerView();
     this._loadingComponent = new LoadingView();
+    this._pageStatisticComponent = new PageStatisticView();
     this._filmPresenter = new Map();
     this._api = api;
 
@@ -94,6 +96,9 @@ export default class FilmsBoardPresenter {
         remove(this._loadingComponent);
         this._renderBoard();
         break;
+      case UpdateType.STATISTIC:
+        this._clearBoard({resetRenderedFilmCount: true, resetSortType: true});
+        render(this._boardContainer, this._pageStatisticComponent);
     }
   }
 
@@ -210,18 +215,18 @@ export default class FilmsBoardPresenter {
 
   _clearBoard({resetRenderedFilmCount = false, resetSortType = false} = {}) {
 
-    const filmCount = this._getFilms().length;
-
     this._filmPresenter.forEach((presenter) => presenter.destroy());
     this._filmPresenter.clear();
 
     remove(this._sortingComponent);
     remove(this._filmsSectionComponent);
     remove(this._buttonShowMoreComponent);
+    remove(this._pageStatisticComponent);
 
     if (resetRenderedFilmCount) {
       this._renderedTaskCount = CARD_FILMS_COUNT_PER_STEP;
     } else {
+      const filmCount = this._getFilms().length;
       this._renderedFilmCount = Math.min(filmCount, this._renderedFilmCount);
     }
 
