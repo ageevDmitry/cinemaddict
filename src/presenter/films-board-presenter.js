@@ -1,21 +1,27 @@
 import FilmsCardPresenter from './film-card-presenter.js';
+import UserRankView from '../view/user-rank-view.js';
 import SortingView from '../view/sorting-view.js';
 import FilmsSectionView from '../view/films-section-view.js';
 import FilmsListView from '../view/films-list-view.js';
 import FilmsContainerView from '../view/films-container-view.js';
 import ButtonShowMoreView from '../view/button-show-more-view.js';
+import FooterStatisticView from '../view/footer-statistic-view.js';
 import NoFilmsView from '../view/no-films-view.js';
 import LoadingView from '../view/loading.js';
 import StatisticBoardView from '../view/statistic-board-view.js';
+import FilterPresenter from '../presenter/filter-presenter.js';
 import {render, remove} from '../utils/render.js';
 import {sortFilmsDate, sortFilmsRating} from '../utils/common.js';
 import {filter} from '../utils/filter.js';
-import {SortType, UpdateType, UserAction, FilterType} from '../const.js';
+import {SortType, UpdateType, UserAction, FilterType, AUTHORIZATION, END_POINT} from '../const.js';
+import {generateStatistic} from '../mock/statistic.js';
+import {generateUserRank} from '../mock/user-rank-status.js';
 
 const CARD_FILMS_COUNT_PER_STEP = 5;
 
 export default class FilmsBoardPresenter {
-  constructor(boardContainer, filmsModel, filterModel, commentsModel, api) {
+  constructor(siteHeader, boardContainer, filmsModel, filterModel, commentsModel, api) {
+    this._siteHeaderContainer = siteHeader;
     this._boardContainer = boardContainer;
     this._filmsModel = filmsModel;
     this._filterModel = filterModel;
@@ -102,11 +108,6 @@ export default class FilmsBoardPresenter {
     }
   }
 
-  _renderStatisticBoard() {
-    this._statisticBoardComponent = new StatisticBoardView(this._filmsModel.getFilms());
-    render(this._boardContainer, this._statisticBoardComponent);
-  }
-
   _handleModeChange() {
 
     this._filmPresenter.forEach((presenter) => presenter.resetView());
@@ -140,6 +141,28 @@ export default class FilmsBoardPresenter {
     }
   }
 
+  _getFilms() {
+
+    this._filterType = this._filterModel.getFilter();
+    const films = this._filmsModel.getFilms();
+    const filtredFilms = filter[this._filterType](films);
+
+    switch (this._currentSortType) {
+      case SortType.DATE:
+        return filtredFilms.sort(sortFilmsDate);
+      case SortType.RATING:
+        return filtredFilms.sort(sortFilmsRating);
+    }
+
+    return filtredFilms;
+  }
+
+  _getComments() {
+    const comments = this._commentsModel.getComments();
+
+    return comments;
+  }
+
   _deleteComment(updateType, updateFilm, updateComment) {
 
     const deletedCommentUpdateFilm = updateFilm;
@@ -165,28 +188,6 @@ export default class FilmsBoardPresenter {
       this._clearBoard({resetRenderedFilmCount: true, resetSortType: true});
       this._renderBoard();
     }
-  }
-
-  _getFilms() {
-
-    this._filterType = this._filterModel.getFilter();
-    const films = this._filmsModel.getFilms();
-    const filtredFilms = filter[this._filterType](films);
-
-    switch (this._currentSortType) {
-      case SortType.DATE:
-        return filtredFilms.sort(sortFilmsDate);
-      case SortType.RATING:
-        return filtredFilms.sort(sortFilmsRating);
-    }
-
-    return filtredFilms;
-  }
-
-  _getComments() {
-    const comments = this._commentsModel.getComments();
-
-    return comments;
   }
 
   _renderBoard() {
@@ -247,6 +248,12 @@ export default class FilmsBoardPresenter {
     }
   }
 
+  _renderUserRank() {
+    const userRank = generateUserRank();
+    render(this._siteHeaderContainer, new UserRankView(userRank));
+    // Здесь будет отрисовка UserRank
+  }
+
   _renderSorting() {
 
     if (this._sortingComponent !== null) {
@@ -289,12 +296,23 @@ export default class FilmsBoardPresenter {
     this._buttonShowMoreComponent.setClickHandler(this._handleShowMoreClick);
   }
 
+  _renderStatisticFooter() {
+    // Здесь будет отрисовка StatisticFooter
+  }
+
+  _renderStatisticBoard() {
+    this._statisticBoardComponent = new StatisticBoardView(this._filmsModel.getFilms());
+    render(this._boardContainer, this._statisticBoardComponent);
+  }
+
   init() {
     this._api.getFilms()
       .then((films) => {
         this._filmsModel.setFilms(UpdateType.INIT, films.map(this._filmsModel.adaptFilmToClient));
       });
 
+    this._renderUserRank();
     this._renderBoard();
+    this._renderStatisticFooter();
   }
 }
