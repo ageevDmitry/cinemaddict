@@ -2,8 +2,12 @@ import Smart from './smart.js';
 import {Chart} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-const createPageStatisticViewTemplate = () => (
-  `<section class="statistic">
+const createStatisticBoardViewTemplate = (films) => {
+
+  console.log(films);
+
+  return (
+    `<section class="statistic">
     <p class="statistic__rank">
       Your rank
       <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
@@ -49,7 +53,8 @@ const createPageStatisticViewTemplate = () => (
     </div>
 
   </section>`
-);
+  );
+};
 
 const createChartElement = (statisticCtx) =>
 // const BAR_HEIGHT = 50;
@@ -114,17 +119,18 @@ const createChartElement = (statisticCtx) =>
     },
   });
 
-export default class PageStatisticView extends Smart {
-  constructor() {
+export default class StatisticBoardView extends Smart {
+  constructor(films) {
     super();
 
+    this._films = films;
     this._filmsChart = null;
 
     this._setCharts();
   }
 
   getTemplate() {
-    return createPageStatisticViewTemplate();
+    return createStatisticBoardViewTemplate(this._films);
   }
 
   _setCharts() {
