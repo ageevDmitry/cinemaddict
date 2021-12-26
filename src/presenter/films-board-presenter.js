@@ -304,12 +304,8 @@ export default class FilmsBoardPresenter {
     this._buttonShowMoreComponent.setClickHandler(this._handleShowMoreClick);
   }
 
-  _renderStatisticFooter() {
-    // Здесь будет отрисовка StatisticFooter
-  }
-
   _renderStatisticBoard() {
-    this._statisticBoardComponent = new StatisticBoardView(this._filmsModel.getFilms());
+    this._statisticBoardComponent = new StatisticBoardView(this._filmsModel.getFilms(), this._userRank);
     render(this._boardContainer, this._statisticBoardComponent);
   }
 
@@ -321,6 +317,5 @@ export default class FilmsBoardPresenter {
 
     this._renderUserRank();
     this._renderBoard();
-    this._renderStatisticFooter();
   }
 }

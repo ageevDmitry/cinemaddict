@@ -2,7 +2,7 @@ import Smart from './smart.js';
 import {Chart} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-const createStatisticBoardViewTemplate = (films) => {
+const createStatisticBoardViewTemplate = (films, userRank) => {
 
   console.log(films);
 
@@ -11,7 +11,7 @@ const createStatisticBoardViewTemplate = (films) => {
     <p class="statistic__rank">
       Your rank
       <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-      <span class="statistic__rank-label">Movie Buff</span>
+      <span class="statistic__rank-label">${userRank}</span>
     </p>
 
     <form action="https:cho.htmlacademy.ru/" method="get" class="statistic__filters">
@@ -120,17 +120,18 @@ const createChartElement = (statisticCtx) =>
   });
 
 export default class StatisticBoardView extends Smart {
-  constructor(films) {
+  constructor(films, userRank) {
     super();
 
     this._films = films;
+    this._userRank =  userRank;
     this._filmsChart = null;
 
     this._setCharts();
   }
 
   getTemplate() {
-    return createStatisticBoardViewTemplate(this._films);
+    return createStatisticBoardViewTemplate(this._films, this._userRank);
   }
 
   _setCharts() {
