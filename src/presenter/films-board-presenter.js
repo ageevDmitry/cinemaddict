@@ -5,16 +5,13 @@ import FilmsSectionView from '../view/films-section-view.js';
 import FilmsListView from '../view/films-list-view.js';
 import FilmsContainerView from '../view/films-container-view.js';
 import ButtonShowMoreView from '../view/button-show-more-view.js';
-import FooterStatisticView from '../view/footer-statistic-view.js';
 import NoFilmsView from '../view/no-films-view.js';
 import LoadingView from '../view/loading.js';
 import StatisticBoardView from '../view/statistic-board-view.js';
-import FilterPresenter from '../presenter/filter-presenter.js';
 import {render, remove} from '../utils/render.js';
 import {sortFilmsDate, sortFilmsRating} from '../utils/common.js';
 import {filter} from '../utils/filter.js';
-import {SortType, UpdateType, UserAction, FilterType, AUTHORIZATION, END_POINT} from '../const.js';
-import {generateStatistic} from '../mock/statistic.js';
+import {SortType, UpdateType, UserAction, FilterType} from '../const.js';
 import {generateUserRank} from '../mock/user-rank-status.js';
 
 const CARD_FILMS_COUNT_PER_STEP = 5;
@@ -26,21 +23,22 @@ export default class FilmsBoardPresenter {
     this._filmsModel = filmsModel;
     this._filterModel = filterModel;
     this._commentsModel = commentsModel;
-    this._filterType = FilterType.ALL_MOVIES;
-    this._sortingComponent = null;
-    this._buttonShowMoreComponent = null;
-    this._noFilmsComponent = null;
-    this._currentSortType = SortType.DEFAULT;
-    this._renderedFilmCount = CARD_FILMS_COUNT_PER_STEP;
-    this._isLoading = true;
     this._filmsSectionComponent = new FilmsSectionView();
     this._filmsListComponent = new FilmsListView();
     this._filmsContainerComponent = new FilmsContainerView();
     this._loadingComponent = new LoadingView();
+    this._userRankComponent = null;
+    this._sortingComponent = null;
+    this._buttonShowMoreComponent = null;
+    this._noFilmsComponent = null;
     this._statisticBoardComponent = null;
+    this._userRank = null;
+    this._filterType = FilterType.ALL_MOVIES;
+    this._currentSortType = SortType.DEFAULT;
+    this._renderedFilmCount = CARD_FILMS_COUNT_PER_STEP;
+    this._isLoading = true;
     this._filmPresenter = new Map();
     this._api = api;
-
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
@@ -91,6 +89,8 @@ export default class FilmsBoardPresenter {
       case UpdateType.MINOR:
         this._filmPresenter.get(updateFilm.id).init(updateFilm, this._getComments());
         this._checkCountFilms();
+        remove(this._userRankComponent);
+        this._renderUserRank();
         break;
       case UpdateType.MAJOR:
         this._renderedFilmCount = CARD_FILMS_COUNT_PER_STEP;
@@ -100,6 +100,8 @@ export default class FilmsBoardPresenter {
       case UpdateType.INIT:
         this._isLoading = false;
         remove(this._loadingComponent);
+        remove(this._userRankComponent);
+        this._renderUserRank();
         this._renderBoard();
         break;
       case UpdateType.STATISTIC:
@@ -195,7 +197,9 @@ export default class FilmsBoardPresenter {
     const films = this._getFilms();
     const filmCount = this._getFilms().length;
 
-    filmCount === 0 ? '' : this._renderSorting();
+    if (filmCount !== 0) {
+      this._renderSorting();
+    }
 
     render(this._boardContainer, this._filmsSectionComponent);
     render(this._filmsSectionComponent, this._filmsListComponent);
@@ -249,9 +253,13 @@ export default class FilmsBoardPresenter {
   }
 
   _renderUserRank() {
-    const userRank = generateUserRank();
-    render(this._siteHeaderContainer, new UserRankView(userRank));
-    // Здесь будет отрисовка UserRank
+
+    const films = this._filmsModel.getFilms();
+    const wathedFilmsCount = filter[FilterType.HISTORY](films).length;
+    this._userRank = generateUserRank(wathedFilmsCount);
+
+    this._userRankComponent = new UserRankView(this._userRank);
+    render(this._siteHeaderContainer, this._userRankComponent);
   }
 
   _renderSorting() {

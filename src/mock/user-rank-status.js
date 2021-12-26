@@ -1,7 +1,7 @@
-import {getRandomInteger} from '../utils/common.js';
+// import {getRandomInteger} from '../utils/common.js';
 
 const USER_RANK_MIN = 0;
-const USER_RANK_MAX = 30;
+// const USER_RANK_MAX = 30;
 
 const USER_RANKS = {
   'Novice' : 1,
@@ -9,10 +9,11 @@ const USER_RANKS = {
   'Movie Buff' : 20,
 };
 
-export const generateUserRank = () => {
+export const generateUserRank = (count) => {
   let userRank;
 
-  const userRankInteger = getRandomInteger(USER_RANK_MIN, USER_RANK_MAX);
+  // const userRankInteger = getRandomInteger(USER_RANK_MIN, USER_RANK_MAX);
+  const userRankInteger = count;
 
   if (userRankInteger === USER_RANK_MIN) {
     userRank = '';
