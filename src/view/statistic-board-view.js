@@ -1,10 +1,15 @@
 import Smart from './smart.js';
 import {Chart} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import {FilterType} from '../const.js';
+import {filter} from '../utils/filter.js';
 
 const createStatisticBoardViewTemplate = (films, userRank) => {
 
+  const wathedFilmsCount = filter[FilterType.HISTORY](films).length;
+  const sciFiFilmsCount = filter[FilterType.SCI_FI](films).length;
   console.log(films);
+  console.log(sciFiFilmsCount);
 
   return (
     `<section class="statistic">
@@ -36,7 +41,7 @@ const createStatisticBoardViewTemplate = (films, userRank) => {
     <ul class="statistic__text-list">
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">You watched</h4>
-        <p class="statistic__item-text">22 <span class="statistic__item-description">movies</span></p>
+        <p class="statistic__item-text">${wathedFilmsCount}<span class="statistic__item-description">movies</span></p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>
@@ -49,18 +54,17 @@ const createStatisticBoardViewTemplate = (films, userRank) => {
     </ul>
 
     <div class="statistic__chart-wrap">
-      <canvas class="statistic__chart" width="1000" height="250"></canvas>
+      <canvas class="statistic__chart" width="1000"></canvas>
     </div>
 
   </section>`
   );
 };
 
-const createChartElement = (statisticCtx) =>
-// const BAR_HEIGHT = 50;
+const createChartElement = (statisticCtx) => {
+  const BAR_HEIGHT = 50;
 
-// Обязательно рассчитайте высоту canvas, она зависит от количества элементов диаграммы
-// statisticCtx.height = BAR_HEIGHT * 5;
+  statisticCtx.height = BAR_HEIGHT * 5;
 
   new Chart(statisticCtx, {
     plugins: [ChartDataLabels],
@@ -118,6 +122,7 @@ const createChartElement = (statisticCtx) =>
       },
     },
   });
+};
 
 export default class StatisticBoardView extends Smart {
   constructor(films, userRank) {

@@ -12,7 +12,7 @@ import {render, remove} from '../utils/render.js';
 import {sortFilmsDate, sortFilmsRating} from '../utils/common.js';
 import {filter} from '../utils/filter.js';
 import {SortType, UpdateType, UserAction, FilterType} from '../const.js';
-import {generateUserRank} from '../mock/user-rank-status.js';
+import {generateUserRank} from '../utils/user-rank.js';
 
 const CARD_FILMS_COUNT_PER_STEP = 5;
 
