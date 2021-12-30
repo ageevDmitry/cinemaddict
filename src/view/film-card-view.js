@@ -20,7 +20,7 @@ export const createFilmCardViewTemplate = (film) => {
         <p class="film-card__rating">${rating}</p>
         <p class="film-card__info">
           <span class="film-card__year">${dayjs(releaseDate).format('YYYY')}</span>
-          <span class="film-card__duration">${runtime}</span>
+          <span class="film-card__duration">${dayjs(new Date(0, 0, 0, 0, runtime)).format('Hh-mmm')}</span>
           <span class="film-card__genre">${genres[0]}</span>
         </p>
         <img src="./${poster}" alt="" class="film-card__poster">

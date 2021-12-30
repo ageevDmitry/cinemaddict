@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import Smart from './smart.js';
 import {Chart} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -41,7 +40,7 @@ const createStatisticBoardViewTemplate = (userRank, watchedCount, totalDuration,
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>
-        <p class="statistic__item-text">${dayjs(new Date(0, 0, 0, 0, 900)).format('HH')}</span></p>
+        <p class="statistic__item-text">${totalDuration.hours}<span class="statistic__item-description">h</span>${totalDuration.minutes}<span class="statistic__item-description">m</span></p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Top genre</h4>
@@ -55,8 +54,6 @@ const createStatisticBoardViewTemplate = (userRank, watchedCount, totalDuration,
 
   </section>`
 );
-
-// <p class="statistic__item-text">130<span class="statistic__item-description">h</span> 22 <span class="statistic__item-description">m</span></p>
 
 const createChartElement = (statisticCtx, labels, data) => {
   const BAR_HEIGHT = 50;
