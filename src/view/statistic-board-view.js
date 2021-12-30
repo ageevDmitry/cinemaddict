@@ -5,12 +5,8 @@ import {FilterType} from '../const.js';
 import {filter} from '../utils/filter.js';
 import {getAllFilmsGenres, getChartLabels, getChartData, getTopGenre} from '../utils/films.js';
 
-const createStatisticBoardViewTemplate = (films, userRank, topGenre) => {
-
-  const wathedFilmsCount = filter[FilterType.HISTORY](films).length;
-
-  return (
-    `<section class="statistic">
+const createStatisticBoardViewTemplate = (userRank, watchedCount, topGenre) => (
+  `<section class="statistic">
     <p class="statistic__rank">
       Your rank
       <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
@@ -39,7 +35,7 @@ const createStatisticBoardViewTemplate = (films, userRank, topGenre) => {
     <ul class="statistic__text-list">
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">You watched</h4>
-        <p class="statistic__item-text">${wathedFilmsCount}<span class="statistic__item-description">movies</span></p>
+        <p class="statistic__item-text">${watchedCount}<span class="statistic__item-description">movies</span></p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>
@@ -56,8 +52,7 @@ const createStatisticBoardViewTemplate = (films, userRank, topGenre) => {
     </div>
 
   </section>`
-  );
-};
+);
 
 const createChartElement = (statisticCtx, labels, data) => {
   const BAR_HEIGHT = 50;
@@ -129,28 +124,29 @@ export default class StatisticBoardView extends Smart {
     this._films = films;
     this._userRank =  userRank;
     this._filmsChart = null;
-    this._allFilmsGenres = null;
     this._chartLabels = null;
     this._chartData = null;
     this._topGenre = null;
+    this._wathedFilmsCount = null;
 
+    this._getData(this._films);
     this._setCharts();
   }
 
   getTemplate() {
-    this._allFilmsGenres = getAllFilmsGenres(this._films);
-    this._chartLabels = getChartLabels(this._allFilmsGenres);
-    this._chartData = getChartData(this._allFilmsGenres, this._chartLabels);
-    this._topGenre = getTopGenre(this._chartLabels, this._chartData);
-    return createStatisticBoardViewTemplate(this._films, this._userRank, this._topGenre);
+    return createStatisticBoardViewTemplate(this._userRank, this._wathedFilmsCount, this._topGenre);
   }
 
   _setCharts() {
-    this._allFilmsGenres = getAllFilmsGenres(this._films);
-    this._chartLabels = getChartLabels(this._allFilmsGenres);
-    this._chartData = getChartData(this._allFilmsGenres, this._chartLabels);
-    this._topGenre = getTopGenre(this._chartLabels, this._chartData);
     const statisticCtx = this.getElement().querySelector('.statistic__chart');
     this._filmsChart = createChartElement(statisticCtx, this._chartLabels, this._chartData);
+  }
+
+  _getData(films) {
+    const allFilmsGenres = getAllFilmsGenres(films);
+    this._chartLabels = getChartLabels(allFilmsGenres);
+    this._chartData = getChartData(allFilmsGenres, this._chartLabels);
+    this._topGenre = getTopGenre(this._chartLabels, this._chartData);
+    this._wathedFilmsCount = filter[FilterType.HISTORY](films).length;
   }
 }

@@ -48,46 +48,46 @@ export const getRandomDate = (yearMin, yearMax) => {
 };
 
 export const getAllFilmsGenres = (films) => {
-  let allGenres = [];
-  
+  const allGenres = [];
+
   for (let i = 0; i < films.length; i++) {
 
-    let film1 = films[i];
+    const film1 = films[i];
 
     for (let n = 0; n < film1.genres.length; n++) {
       allGenres.push(film1.genres[n]);
     }
   }
-  return allGenres;  
-}
+  return allGenres;
+};
 
 export const getChartLabels = (allFilmsGenres) => {
   const labels = new Set(allFilmsGenres);
-  
-  return Array.from(labels)
-}
 
-export const getChartData = (allFilmsGenres, chartLabels) => {  
-  let data = [];
-  
+  return Array.from(labels);
+};
+
+export const getChartData = (allFilmsGenres, chartLabels) => {
+  const data = [];
+
   chartLabels.forEach((element) => {
     const index = allFilmsGenres.filter((genres) => genres.includes(element)).length;
     data.push(index);
-  })
-  
+  });
+
   return data;
-}
+};
 
 export const getTopGenre = (chartLabels, chartData) => {
   let data = 0;
   let topGenreIndex = 0;
-  
+
   chartData.forEach((element, index) => {
     if (element > data) {
       data = element;
       topGenreIndex = index;
     }
   });
-  
+
   return chartLabels[topGenreIndex];
-}
+};
