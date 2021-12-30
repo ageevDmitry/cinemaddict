@@ -40,7 +40,10 @@ const createStatisticBoardViewTemplate = (userRank, watchedCount, totalDuration,
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>
-        <p class="statistic__item-text">${totalDuration.hours}<span class="statistic__item-description">h</span>${totalDuration.minutes}<span class="statistic__item-description">m</span></p>
+        <p class="statistic__item-text">
+          ${totalDuration.hours > 0 ? `${totalDuration.hours}<span class="statistic__item-description">h</span>`: ''}
+          ${totalDuration.minutes > 0 ? `${totalDuration.minutes}<span class="statistic__item-description">m</span>`: ''}
+        </p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Top genre</h4>

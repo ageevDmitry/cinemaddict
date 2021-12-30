@@ -1,7 +1,4 @@
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
 import {getRandomInteger}  from './common.js';
-dayjs.extend(duration);
 
 export const COMMENTS_LENGTH_ID_MAX = 10;
 
@@ -95,6 +92,19 @@ export const getTopGenre = (chartLabels, chartData) => {
   return chartLabels[topGenreIndex];
 };
 
+export const getFilmDuration = (duration) => {
+
+  const hours = Math.trunc(duration / 60);
+  const minutes = duration - hours * 60;
+
+  const filmDuration = {
+    hours : hours,
+    minutes : minutes,
+  };
+
+  return filmDuration;
+};
+
 export const getTotalDuration = (films) => {
 
   let durationMinutes = 0;
@@ -103,15 +113,5 @@ export const getTotalDuration = (films) => {
     durationMinutes = durationMinutes + film.runtime;
   });
 
-  const hours = Math.trunc(dayjs.duration({ minutes: durationMinutes }).asHours());
-
-  const minutes = durationMinutes - hours * 60;
-
-  const totalDuration = {
-    hours: hours,
-    minutes: minutes,
-  };
-
-  return totalDuration;
-
+  return getFilmDuration(durationMinutes);
 };
