@@ -2,6 +2,7 @@ import he from 'he';
 import SmartView from './smart.js';
 import dayjs from 'dayjs';
 import {COMMENT_EMOJIS} from '../const.js';
+import {getFilmDuration} from '../utils/films.js';
 
 const createCommentTemplate = (comment) => {
 
@@ -26,9 +27,7 @@ const createCommentTemplate = (comment) => {
 
 const createFilmPopupViewTemplate = (film, comments, data) => {
 
-  const {poster, title, originalTitle, rating, director, writers, actors, releaseDate, country, genres, description, ageLimit, isWatchlist, isWatched, isFavorite} = film;
-
-  const runtime = 100;
+  const {poster, title, originalTitle, rating, director, writers, actors, releaseDate, country, genres, description, ageLimit, runtime, isWatchlist, isWatched, isFavorite} = film;
 
   const getFilmGenreTemplate = (genre) => `<span class="film-details__genre">${genre}</span>`;
   const isFilmFlag = (flag) => (flag) ? 'film-details__control-button--active' : '';
@@ -69,6 +68,7 @@ const createFilmPopupViewTemplate = (film, comments, data) => {
   const filmCommentsCount = comments.length;
   const userCommentTemplate = createUserCommentTemplate(data);
   const emojiInputTemplate = COMMENT_EMOJIS.map((emojiInput) => createEmojiTemplate(emojiInput)).join('');
+  const filmDuration = getFilmDuration(runtime);
 
   return (
     `<section class="film-details">
@@ -115,16 +115,9 @@ const createFilmPopupViewTemplate = (film, comments, data) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>
-                  <td class="film-details__cell">${
-  // dayjs.duration({
-  //   seconds: 1,
-  //   minutes: 2,
-  //   hours: 3,
-  //   days: 4,
-  //   months: 6,
-  //   years: 7,
-  // }).format('YYYY-MM-DDTHH:mm:ss')}
-    runtime}</td>
+                  <td class="film-details__cell">
+                    ${filmDuration.hours > 0 ? `${filmDuration.hours}h`: ''}
+                    ${filmDuration.minutes > 0 ? `${filmDuration.minutes}m`: ''}
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Country</td>

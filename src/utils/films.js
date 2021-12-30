@@ -47,20 +47,71 @@ export const getRandomDate = (yearMin, yearMax) => {
   return date;
 };
 
-export const generateCommentsId = () => {
+export const getAllFilmsGenres = (films) => {
+  const allGenres = [];
 
-  const commentsId = [];
-  const commentsIdLength = getRandomInteger(1, COMMENTS_LENGTH_ID_MAX);
+  for (let i = 0; i < films.length; i++) {
 
-  for (let i = 0; i < commentsIdLength; i++) {
-    const id =i.toString();
-    commentsId.push(id);
+    const currentfilm = films[i];
+
+    for (let n = 0; n < currentfilm.genres.length; n++) {
+      allGenres.push(currentfilm.genres[n]);
+    }
   }
-
-  const randomCommentsId = getRandomArray(commentsId);
-  const idSet = new Set(randomCommentsId);
-  const uniqueId = Array.from(idSet);
-
-  return uniqueId;
+  return allGenres;
 };
 
+export const getChartLabels = (allFilmsGenres) => {
+  const labels = new Set(allFilmsGenres);
+
+  return Array.from(labels);
+};
+
+export const getChartData = (allFilmsGenres, chartLabels) => {
+  const data = [];
+
+  chartLabels.forEach((element) => {
+    const index = allFilmsGenres.filter((genres) => genres.includes(element)).length;
+    data.push(index);
+  });
+
+  return data;
+};
+
+export const getTopGenre = (chartLabels, chartData) => {
+  let data = 0;
+  let topGenreIndex = 0;
+
+  chartData.forEach((element, index) => {
+    if (element > data) {
+      data = element;
+      topGenreIndex = index;
+    }
+  });
+
+  return chartLabels[topGenreIndex];
+};
+
+export const getFilmDuration = (duration) => {
+
+  const hours = Math.trunc(duration / 60);
+  const minutes = duration - hours * 60;
+
+  const filmDuration = {
+    hours : hours,
+    minutes : minutes,
+  };
+
+  return filmDuration;
+};
+
+export const getTotalDuration = (films) => {
+
+  let durationMinutes = 0;
+
+  films.forEach((film) => {
+    durationMinutes = durationMinutes + film.runtime;
+  });
+
+  return getFilmDuration(durationMinutes);
+};
