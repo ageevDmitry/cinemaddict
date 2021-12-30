@@ -1,11 +1,13 @@
+import dayjs from 'dayjs';
 import Smart from './smart.js';
 import {Chart} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {FilterType} from '../const.js';
 import {filter} from '../utils/filter.js';
-import {getAllFilmsGenres, getChartLabels, getChartData, getTopGenre} from '../utils/films.js';
+import {getAllFilmsGenres, getChartLabels, getChartData, getTopGenre, getTotalDuration} from '../utils/films.js';
 
-const createStatisticBoardViewTemplate = (userRank, watchedCount, topGenre) => (
+const createStatisticBoardViewTemplate = (userRank, watchedCount, totalDuration, topGenre) => (
+
   `<section class="statistic">
     <p class="statistic__rank">
       Your rank
@@ -39,7 +41,7 @@ const createStatisticBoardViewTemplate = (userRank, watchedCount, topGenre) => (
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>
-        <p class="statistic__item-text">130 <span class="statistic__item-description">h</span> 22 <span class="statistic__item-description">m</span></p>
+        <p class="statistic__item-text">${dayjs(new Date(0, 0, 0, 0, 900)).format('HH')}</span></p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Top genre</h4>
@@ -53,6 +55,8 @@ const createStatisticBoardViewTemplate = (userRank, watchedCount, topGenre) => (
 
   </section>`
 );
+
+// <p class="statistic__item-text">130<span class="statistic__item-description">h</span> 22 <span class="statistic__item-description">m</span></p>
 
 const createChartElement = (statisticCtx, labels, data) => {
   const BAR_HEIGHT = 50;
@@ -128,13 +132,17 @@ export default class StatisticBoardView extends Smart {
     this._chartData = null;
     this._topGenre = null;
     this._wathedFilmsCount = null;
+    this._totalDuration = null;
 
     this._getData(this._films);
     this._setCharts();
+
+    console.log(this._films);
+
   }
 
   getTemplate() {
-    return createStatisticBoardViewTemplate(this._userRank, this._wathedFilmsCount, this._topGenre);
+    return createStatisticBoardViewTemplate(this._userRank, this._wathedFilmsCount, this._totalDuration, this._topGenre);
   }
 
   _setCharts() {
@@ -148,5 +156,7 @@ export default class StatisticBoardView extends Smart {
     this._chartData = getChartData(allFilmsGenres, this._chartLabels);
     this._topGenre = getTopGenre(this._chartLabels, this._chartData);
     this._wathedFilmsCount = filter[FilterType.HISTORY](films).length;
+    this._totalDuration = getTotalDuration(films);
+    console.log(this._totalDuration);
   }
 }

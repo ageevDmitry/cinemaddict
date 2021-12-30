@@ -52,10 +52,10 @@ export const getAllFilmsGenres = (films) => {
 
   for (let i = 0; i < films.length; i++) {
 
-    const film1 = films[i];
+    const currentfilm = films[i];
 
-    for (let n = 0; n < film1.genres.length; n++) {
-      allGenres.push(film1.genres[n]);
+    for (let n = 0; n < currentfilm.genres.length; n++) {
+      allGenres.push(currentfilm.genres[n]);
     }
   }
   return allGenres;
@@ -90,4 +90,15 @@ export const getTopGenre = (chartLabels, chartData) => {
   });
 
   return chartLabels[topGenreIndex];
+};
+
+export const getTotalDuration = (films) => {
+
+  let totalDuration = 0;
+
+  films.forEach((film) => {
+    totalDuration = totalDuration + film.runtime;
+  });
+
+  return totalDuration;
 };
