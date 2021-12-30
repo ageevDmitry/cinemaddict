@@ -313,9 +313,10 @@ export default class FilmsBoardPresenter {
     this._api.getFilms()
       .then((films) => {
         this._filmsModel.setFilms(UpdateType.INIT, films.map(this._filmsModel.adaptFilmToClient));
+      })
+      .catch(()=> {
+        this._renderUserRank();
+        this._renderBoard();
       });
-
-    this._renderUserRank();
-    this._renderBoard();
   }
 }

@@ -5,5 +5,5 @@ export const filter = {
   [FilterType.WATCHLIST]: (films) => films.filter((film) => film.isWatchlist),
   [FilterType.HISTORY]: (films) => films.filter((film) => film.isWatched),
   [FilterType.FAVORITES]: (films) => films.filter((film) => film.isFavorite),
-  [FilterType.SCI_FI]: (films) => films.filter((film) => film.genres['Sci-Fi']),
+  [FilterType.SCI_FI]: (films) => films.filter((film) => film.genres.includes('Sci-Fi')),
 };
