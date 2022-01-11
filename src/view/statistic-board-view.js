@@ -135,10 +135,10 @@ export default class StatisticBoardView extends Smart {
     this._totalDuration = null;
 
     this._getData(this._films);
-    this._setCharts();
-
-    console.log(this._films);
-
+    setTimeout (() => {
+      this._setCharts();
+      console.log(this._films);
+    }, 0);
   }
 
   getTemplate() {
