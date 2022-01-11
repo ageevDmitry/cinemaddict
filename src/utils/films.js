@@ -1,4 +1,7 @@
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
 import {getRandomInteger}  from './common.js';
+dayjs.extend(isBetween);
 
 export const COMMENTS_LENGTH_ID_MAX = 10;
 
@@ -47,20 +50,6 @@ export const getRandomDate = (yearMin, yearMax) => {
   return date;
 };
 
-export const getAllFilmsGenres = (films) => {
-  const allGenres = [];
-
-  for (let i = 0; i < films.length; i++) {
-
-    const currentfilm = films[i];
-
-    for (let n = 0; n < currentfilm.genres.length; n++) {
-      allGenres.push(currentfilm.genres[n]);
-    }
-  }
-  return allGenres;
-};
-
 export const getChartData = (films) => {
   const chartData = films.map((film) => film.genres)
     .flat()
@@ -74,12 +63,6 @@ export const getChartData = (films) => {
     }, {});
 
   return chartData;
-};
-
-export const getChartLabels = (allFilmsGenres) => {
-  const labels = new Set(allFilmsGenres);
-
-  return Array.from(labels);
 };
 
 export const getTopGenre = (chartData) => {
@@ -113,7 +96,7 @@ export const getFilmDuration = (duration) => {
   return filmDuration;
 };
 
-export const getTotalDuration = (films) => {
+export const getChartDuration = (films) => {
 
   let durationMinutes = 0;
 
@@ -122,4 +105,13 @@ export const getTotalDuration = (films) => {
   });
 
   return getFilmDuration(durationMinutes);
+};
+
+export const isBetweenDate = (watchingDate, period) => {
+
+  const between = dayjs(new Date()).subtract(1, period).format();
+  // const flag = dayjs(watchingDate).isBetween(dayjs(new Date()), dayjs().startOf(period));
+  const flag = dayjs(watchingDate).isBetween(dayjs(new Date()), between);
+
+  return flag;
 };

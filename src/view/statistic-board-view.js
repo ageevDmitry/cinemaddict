@@ -1,9 +1,12 @@
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
 import Smart from './smart.js';
 import {Chart} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {FilterType} from '../const.js';
 import {filter} from '../utils/filter.js';
-import {getAllFilmsGenres, getChartLabels, getChartData, getTopGenre, getTotalDuration} from '../utils/films.js';
+import {getChartData, getTopGenre, getChartDuration, isBetweenDate} from '../utils/films.js';
+dayjs.extend(isBetween);
 
 const createStatisticBoardViewTemplate = (userRank, watchedCount, totalDuration, topGenre) => (
 
@@ -126,6 +129,7 @@ export default class StatisticBoardView extends Smart {
     super();
 
     this._films = films;
+    this._filterFilms = null;
     this._userRank =  userRank;
     this._filmsChart = null;
     this._chartLabels = null;
@@ -151,11 +155,12 @@ export default class StatisticBoardView extends Smart {
   }
 
   _getData(films) {
-    // const allFilmsGenres = getAllFilmsGenres(films);
-    // this._chartLabels = getChartLabels(allFilmsGenres);
-    this._chartData = getChartData(films);
+    this._filterFilms = films.filter((film) => isBetweenDate(film.watchingDate, 'year'));
+    this._chartData = getChartData(this._filterFilms);
     this._topGenre = getTopGenre(this._chartData);
-    this._wathedFilmsCount = filter[FilterType.HISTORY](films).length;
-    this._totalDuration = getTotalDuration(films);
+    this._wathedFilmsCount = filter[FilterType.HISTORY](this._filterFilms).length;
+    this._totalDuration = getChartDuration(this._filterFilms);
+
+    console.log(this._filterFilms);
   }
 }
