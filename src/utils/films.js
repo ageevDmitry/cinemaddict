@@ -61,35 +61,43 @@ export const getAllFilmsGenres = (films) => {
   return allGenres;
 };
 
+export const getChartData = (films) => {
+  const chartData = films.map((film) => film.genres)
+    .flat()
+    .reduce((previousValue, currentValue) => {
+      if (previousValue[currentValue] === undefined) {
+        previousValue[currentValue] = 1;
+      } else {
+        previousValue[currentValue] = previousValue[currentValue] + 1;
+      }
+      return previousValue;
+    }, {});
+
+  return chartData;
+};
+
 export const getChartLabels = (allFilmsGenres) => {
   const labels = new Set(allFilmsGenres);
 
   return Array.from(labels);
 };
 
-export const getChartData = (allFilmsGenres, chartLabels) => {
-  const data = [];
+export const getTopGenre = (chartData) => {
 
-  chartLabels.forEach((element) => {
-    const index = allFilmsGenres.filter((genres) => genres.includes(element)).length;
-    data.push(index);
-  });
+  const values = Object.values(chartData);
+  const keys = Object.keys(chartData);
 
-  return data;
-};
-
-export const getTopGenre = (chartLabels, chartData) => {
   let data = 0;
   let topGenreIndex = 0;
 
-  chartData.forEach((element, index) => {
+  values.forEach((element, index) => {
     if (element > data) {
       data = element;
       topGenreIndex = index;
     }
   });
 
-  return chartLabels[topGenreIndex];
+  return keys[topGenreIndex];
 };
 
 export const getFilmDuration = (duration) => {

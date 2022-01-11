@@ -58,7 +58,7 @@ const createStatisticBoardViewTemplate = (userRank, watchedCount, totalDuration,
   </section>`
 );
 
-const createChartElement = (statisticCtx, labels, data) => {
+const createChartElement = (statisticCtx, data) => {
   const BAR_HEIGHT = 50;
 
   statisticCtx.height = BAR_HEIGHT * 5;
@@ -67,9 +67,9 @@ const createChartElement = (statisticCtx, labels, data) => {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
     data: {
-      labels: labels,
+      labels: Object.keys(data),
       datasets: [{
-        data: data,
+        data: Object.values(data),
         backgroundColor: '#ffe800',
         hoverBackgroundColor: '#ffe800',
         anchor: 'start',
@@ -147,16 +147,15 @@ export default class StatisticBoardView extends Smart {
 
   _setCharts() {
     const statisticCtx = this.getElement().querySelector('.statistic__chart');
-    this._filmsChart = createChartElement(statisticCtx, this._chartLabels, this._chartData);
+    this._filmsChart = createChartElement(statisticCtx, this._chartData);
   }
 
   _getData(films) {
-    const allFilmsGenres = getAllFilmsGenres(films);
-    this._chartLabels = getChartLabels(allFilmsGenres);
-    this._chartData = getChartData(allFilmsGenres, this._chartLabels);
-    this._topGenre = getTopGenre(this._chartLabels, this._chartData);
+    // const allFilmsGenres = getAllFilmsGenres(films);
+    // this._chartLabels = getChartLabels(allFilmsGenres);
+    this._chartData = getChartData(films);
+    this._topGenre = getTopGenre(this._chartData);
     this._wathedFilmsCount = filter[FilterType.HISTORY](films).length;
     this._totalDuration = getTotalDuration(films);
-    console.log(this._totalDuration);
   }
 }

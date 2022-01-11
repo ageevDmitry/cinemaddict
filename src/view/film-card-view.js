@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract.js';
-import {getFilmDuration} from '../utils/films.js';
+// import {getFilmDuration} from '../utils/films.js';
 
 const FILM_DESCRIPTION_LENGTH = 140;
 const isFilmFlag = (flag) => (flag) ? 'film-card__controls-item--active' : '';
