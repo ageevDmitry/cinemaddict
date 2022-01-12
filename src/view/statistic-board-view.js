@@ -155,11 +155,16 @@ export default class StatisticBoardView extends Smart {
   }
 
   _getData(films) {
-    this._filterFilms = films.filter((film) => isBetweenDate(film.watchingDate, 'year'));
-    this._chartData = getChartData(this._filterFilms);
+    const period = 'year';
+
+    if (period !== 'all time') {
+      this._films = films.filter((film) => isBetweenDate(film.watchingDate, period));
+    }
+
+    this._chartData = getChartData(this._films);
     this._topGenre = getTopGenre(this._chartData);
-    this._wathedFilmsCount = filter[FilterType.HISTORY](this._filterFilms).length;
-    this._totalDuration = getChartDuration(this._filterFilms);
+    this._wathedFilmsCount = filter[FilterType.HISTORY](this._films).length;
+    this._totalDuration = getChartDuration(this._films);
 
     console.log(this._filterFilms);
   }
