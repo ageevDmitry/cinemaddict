@@ -156,6 +156,7 @@ export default class StatisticBoardView extends Smart {
     evt.preventDefault();
     this._statisticPeriod = evt.target.value;
     this._getData();
+    // this.updateElement();
     this.updateData(this._filterFilms);
     this._setCharts();
     console.log(evt.target.value);

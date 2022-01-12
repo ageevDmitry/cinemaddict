@@ -110,7 +110,7 @@ export const getChartDuration = (films) => {
 export const isBetweenDate = (watchingDate, period) => {
 
   if (period === 'today') {
-    return dayjs(watchingDate).isBetween(dayjs(new Date()), dayjs().startOf(period));
+    return dayjs(watchingDate).isBetween(dayjs(new Date()), dayjs().startOf('day'));
   }
 
   const startingPoint = dayjs(new Date()).subtract(1, period).format();
