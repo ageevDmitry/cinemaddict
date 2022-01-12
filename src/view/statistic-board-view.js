@@ -137,16 +137,36 @@ export default class StatisticBoardView extends Smart {
     this._topGenre = null;
     this._wathedFilmsCount = null;
     this._totalDuration = null;
+    this._statisticPeriod = 'all-time';
 
-    this._getData(this._films);
+    this._getData();
     setTimeout (() => {
       this._setCharts();
       console.log(this._films);
     }, 0);
+
+    this._choiceStatisticPeriod = this._choiceStatisticPeriod.bind(this);
   }
 
   getTemplate() {
     return createStatisticBoardViewTemplate(this._userRank, this._wathedFilmsCount, this._totalDuration, this._topGenre);
+  }
+
+  _choiceStatisticPeriod(evt) {
+    evt.preventDefault();
+    this._statisticPeriod = evt.target.value;
+    this._getData();
+    this.updateData(this._filterFilms);
+    this._setCharts();
+    console.log(evt.target.value);
+  }
+
+  setStatisticPeriodClickHandlers() {
+    this.getElement().querySelector('.statistic__filters').addEventListener('change', this._choiceStatisticPeriod);
+  }
+
+  restoreHandlers() {
+    this.setStatisticPeriodClickHandlers();
   }
 
   _setCharts() {
@@ -154,18 +174,17 @@ export default class StatisticBoardView extends Smart {
     this._filmsChart = createChartElement(statisticCtx, this._chartData);
   }
 
-  _getData(films) {
-    const period = 'year';
+  _getData() {
 
-    if (period !== 'all time') {
-      this._films = films.filter((film) => isBetweenDate(film.watchingDate, period));
+    if (this._statisticPeriod !== 'all-time') {
+      this._filterFilms = this._films.filter((film) => isBetweenDate(film.watchingDate, this._statisticPeriod));
+    } else {
+      this._filterFilms = this._films;
     }
 
-    this._chartData = getChartData(this._films);
+    this._chartData = getChartData(this._filterFilms);
     this._topGenre = getTopGenre(this._chartData);
-    this._wathedFilmsCount = filter[FilterType.HISTORY](this._films).length;
-    this._totalDuration = getChartDuration(this._films);
-
-    console.log(this._filterFilms);
+    this._wathedFilmsCount = filter[FilterType.HISTORY](this._filterFilms).length;
+    this._totalDuration = getChartDuration(this._filterFilms);
   }
 }
