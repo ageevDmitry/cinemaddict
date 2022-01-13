@@ -45,14 +45,9 @@ export const MethodApi = {
 };
 
 export const StatisticCheckbox = [
-  { type : 'all-time',
-    name : 'All time'},
-  { type : 'today',
-    name : 'Today'},
-  { type : 'week',
-    name : 'Week'},
-  { type : 'month',
-    name : 'Month'},
-  { type : 'year',
-    name : 'Year'},
+  { type : 'all-time', name : 'All time'},
+  { type : 'today', name : 'Today'},
+  { type : 'week', name : 'Week'},
+  { type : 'month', name : 'Month'},
+  { type : 'year', name : 'Year'},
 ];
