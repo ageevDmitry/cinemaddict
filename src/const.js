@@ -35,7 +35,7 @@ export const FilterType = {
 };
 
 export const AUTHORIZATION = 'Basic hu901ibxaqp';
-export const END_POINT = 'https://15.ecmascript.pages.academy/cinemaddict';
+export const END_POINT = 'https://16.ecmascript.pages.academy/cinemaddict';
 
 export const MethodApi = {
   GET: 'GET',
@@ -43,3 +43,11 @@ export const MethodApi = {
   DELETE: 'DELETE',
   POST: 'POST',
 };
+
+export const StatisticCheckbox = [
+  { type : 'all-time', name : 'All time'},
+  { type : 'today', name : 'Today'},
+  { type : 'week', name : 'Week'},
+  { type : 'month', name : 'Month'},
+  { type : 'year', name : 'Year'},
+];

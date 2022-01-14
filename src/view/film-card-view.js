@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract.js';
-import {getFilmDuration} from '../utils/films.js';
+// import {getFilmDuration} from '../utils/films.js';
 
 const FILM_DESCRIPTION_LENGTH = 140;
 const isFilmFlag = (flag) => (flag) ? 'film-card__controls-item--active' : '';
@@ -13,7 +13,7 @@ export const createFilmCardViewTemplate = (film) => {
   const isWatchedClassName = isFilmFlag(isWatched);
   const isFavoriteClassName = isFilmFlag(isFavorite);
   const filmCommentsCount = film.commentsId.length;
-  const filmDuration = getFilmDuration(runtime);
+  // const filmDuration = getFilmDuration(runtime);
 
   return (
     `<article class="film-card">
@@ -23,8 +23,7 @@ export const createFilmCardViewTemplate = (film) => {
         <p class="film-card__info">
           <span class="film-card__year">${dayjs(releaseDate).format('YYYY')}</span>
           <span class="film-card__duration">
-            ${filmDuration.hours > 0 ? `${filmDuration.hours}h`: ''}
-            ${filmDuration.minutes > 0 ? `${filmDuration.minutes}m`: ''}
+            ${dayjs(new Date(0, 0, 0, 0, runtime)).format('H[h] mm[m]')}
           <span class="film-card__genre">${genres[0]}</span>
         </p>
         <img src="./${poster}" alt="" class="film-card__poster">
