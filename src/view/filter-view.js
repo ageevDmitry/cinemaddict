@@ -8,7 +8,7 @@ const createFilterViewTemplate = (filters, currentFilterType) => {
     return (
       `<a href="#${type}" class="main-navigation__item ${type === currentFilterTypeLink ? 'main-navigation__item--active' : ''}" data-filter-type="${type}">
       ${name}
-      ${type !== 'all' ? `<span class="main-navigation__item-count">${count}</span>` : ''}</a>`
+      ${type !== 'all' ? `<span class="main-navigation__item-count" data-filter-type="${type}">${count}</span>` : ''}</a>`
     );
   };
 
@@ -50,7 +50,7 @@ export default class FilterView extends AbstractView {
 
   setFilterTypeClickHandler(callback) {
     this._callback.filterTypeClick = callback;
-    this.getElement().querySelectorAll('.main-navigation__item')
+    this.getElement().querySelectorAll('.main-navigation__item ')
       .forEach((element) => element.addEventListener('click', this._filterTypeClickHandler));
   }
 
