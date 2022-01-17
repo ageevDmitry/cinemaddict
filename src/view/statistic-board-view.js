@@ -146,10 +146,10 @@ export default class StatisticBoardView extends Smart {
     this._statisticPeriod = 'all-time';
 
     this._getData();
-    setTimeout (() => {
-      this._setCharts();
-      console.log(this._films);
-    }, 0);
+    // setTimeout (() => {
+    //   this._setCharts();
+    //   console.log(this._films);
+    // }, 0);
 
     this._choiceStatisticPeriod = this._choiceStatisticPeriod.bind(this);
   }
@@ -163,6 +163,7 @@ export default class StatisticBoardView extends Smart {
     this._statisticPeriod = evt.target.value;
     this._getData();
     this.updateData(this._filterFilms);
+    this.renderChart();
     this._setCharts();
   }
 
@@ -172,6 +173,10 @@ export default class StatisticBoardView extends Smart {
 
   restoreHandlers() {
     this.setStatisticPeriodClickHandlers();
+  }
+
+  renderChart() {
+    this._setCharts();
   }
 
   _setCharts() {

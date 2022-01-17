@@ -306,8 +306,9 @@ export default class FilmsBoardPresenter {
 
   _renderStatisticBoard() {
     this._statisticBoardComponent = new StatisticBoardView(this._filmsModel.getFilms(), this._userRank);
-    this._statisticBoardComponent.setStatisticPeriodClickHandlers();
     render(this._boardContainer, this._statisticBoardComponent);
+    this._statisticBoardComponent.renderChart();
+    this._statisticBoardComponent.setStatisticPeriodClickHandlers();
   }
 
   init() {
