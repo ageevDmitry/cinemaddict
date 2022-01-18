@@ -1,15 +1,15 @@
 import Smart from './smart.js';
 import {Chart} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {FilterType, StatisticCheckbox} from '../const.js';
+import {FilterType, StatisticRadioButton, START_STATISTIC_PERIOD} from '../const.js';
 import {filter} from '../utils/filter.js';
 import {getChartData, getTopGenre, getChartDuration, isBetweenDate} from '../utils/films.js';
 
 const createStatisticBoardViewTemplate = (userRank, watchedCount, totalDuration, topGenre, statisticPeriod) => {
 
-  const getStatisticCheckboxTemplate = (check) => {
+  const getStatisticRadioButtonTemplate = (button) => {
 
-    const {type, name} = check;
+    const {type, name} = button;
 
     return (
       `<input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-${type}" value="${type}" ${type === statisticPeriod ? 'checked' : ''}>
@@ -19,12 +19,12 @@ const createStatisticBoardViewTemplate = (userRank, watchedCount, totalDuration,
 
   const getStatisticFormTemplate = () => {
 
-    const statisticCheckboxTemplate = StatisticCheckbox.map((check) => getStatisticCheckboxTemplate(check)).join('');
+    const statisticRadioButtonTemplate = StatisticRadioButton.map((button) => getStatisticRadioButtonTemplate(button)).join('');
 
     return (
       `<form action="https:cho.htmlacademy.ru/" method="get" class="statistic__filters">
       <p class="statistic__filters-description">Show stats:</p>
-      ${statisticCheckboxTemplate}
+      ${statisticRadioButtonTemplate}
       </form>`
     );
   };
@@ -44,18 +44,21 @@ const createStatisticBoardViewTemplate = (userRank, watchedCount, totalDuration,
     <ul class="statistic__text-list">
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">You watched</h4>
-        <p class="statistic__item-text">${watchedCount}<span class="statistic__item-description">movies</span></p>
+        <p class="statistic__item-text"> ${watchedCount !== null ? `${watchedCount}`: '0'}
+       <span class="statistic__item-description">movies</span></p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>
         <p class="statistic__item-text">
-          ${totalDuration.hours > 0 ? `${totalDuration.hours}<span class="statistic__item-description">h</span>`: ''}
-          ${totalDuration.minutes > 0 ? `${totalDuration.minutes}<span class="statistic__item-description">m</span>`: ''}
+          ${totalDuration !== null ? `${totalDuration.hours}<span class="statistic__item-description">h</span>`: ''}
+          ${totalDuration !== null ? `${totalDuration.minutes}<span class="statistic__item-description">m</span>`: ''}
         </p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Top genre</h4>
-        <p class="statistic__item-text">${topGenre}</p>
+        <p class="statistic__item-text">
+          ${topGenre !== null ? `${topGenre}`: ''}          
+        </p>
       </li>
     </ul>
 
@@ -68,6 +71,11 @@ const createStatisticBoardViewTemplate = (userRank, watchedCount, totalDuration,
 };
 
 const createChartElement = (statisticCtx, data) => {
+
+  if (data === null) {
+    return;
+  }
+
   const BAR_HEIGHT = 50;
 
   statisticCtx.height = BAR_HEIGHT * 5;
@@ -143,7 +151,7 @@ export default class StatisticBoardView extends Smart {
     this._topGenre = null;
     this._wathedFilmsCount = null;
     this._totalDuration = null;
-    this._statisticPeriod = 'all-time';
+    this._statisticPeriod = START_STATISTIC_PERIOD;
 
     this._getData();
 
@@ -182,16 +190,18 @@ export default class StatisticBoardView extends Smart {
 
   _getData() {
 
-    if (this._statisticPeriod !== 'all-time') {
+    if (this._statisticPeriod !== START_STATISTIC_PERIOD) {
       this._filterFilms = this._films.filter((film) => isBetweenDate(film.watchingDate, this._statisticPeriod));
     } else {
       this._filterFilms = this._films;
     }
 
-    this._chartData = getChartData(this._filterFilms);
-    this._topGenre = getTopGenre(this._chartData);
-    this._wathedFilmsCount = filter[FilterType.HISTORY](this._filterFilms).length;
-    this._totalDuration = getChartDuration(this._filterFilms);
+    if (this._filterFilms.length !== 0) {
+      this._chartData = getChartData(this._filterFilms);
+      this._topGenre = getTopGenre(this._chartData);
+      this._wathedFilmsCount = filter[FilterType.HISTORY](this._filterFilms).length;
+      this._totalDuration = getChartDuration(this._filterFilms);
+    }
   }
 }
 

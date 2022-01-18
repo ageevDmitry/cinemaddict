@@ -7,6 +7,8 @@ export const COMMENT_EMOJIS = [
 
 export const ESCAPE = 'Escape';
 
+export const START_STATISTIC_PERIOD = 'all-time';
+
 export const SortType = {
   DEFAULT: 'default',
   DATE: 'date',
@@ -35,6 +37,7 @@ export const FilterType = {
 };
 
 export const AUTHORIZATION = 'Basic hu901ibxaqp';
+
 export const END_POINT = 'https://16.ecmascript.pages.academy/cinemaddict';
 
 export const MethodApi = {
@@ -44,7 +47,7 @@ export const MethodApi = {
   POST: 'POST',
 };
 
-export const StatisticCheckbox = [
+export const StatisticRadioButton = [
   { type : 'all-time', name : 'All time'},
   { type : 'today', name : 'Today'},
   { type : 'week', name : 'Week'},
