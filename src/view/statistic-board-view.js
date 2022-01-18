@@ -142,7 +142,7 @@ export default class StatisticBoardView extends Smart {
   constructor(films, userRank) {
     super();
 
-    this._films = films;
+    this._films = filter[FilterType.HISTORY](films);
     this._filterFilms = null;
     this._userRank =  userRank;
     this._filmsChart = null;
@@ -201,7 +201,11 @@ export default class StatisticBoardView extends Smart {
       this._topGenre = getTopGenre(this._chartData);
       this._wathedFilmsCount = filter[FilterType.HISTORY](this._filterFilms).length;
       this._totalDuration = getChartDuration(this._filterFilms);
+    } else {
+      this._chartData = null;
+      this._topGenre = null;
+      this._wathedFilmsCount = null;
+      this._totalDuration = null;
     }
   }
 }
-
