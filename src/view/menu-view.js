@@ -1,6 +1,7 @@
 import AbstractView from './abstract.js';
+import {STATISTIC_BOARD} from '../const.js';
 
-const createFilterViewTemplate = (filters, currentFilterType) => {
+const createMenuViewTemplate = (filters, currentMenuButton) => {
 
   const getFilterTemplate = (filterLink, currentFilterTypeLink) => {
     const {type, name, count} = filterLink;
@@ -8,34 +9,34 @@ const createFilterViewTemplate = (filters, currentFilterType) => {
     return (
       `<a href="#${type}" class="main-navigation__item ${type === currentFilterTypeLink ? 'main-navigation__item--active' : ''}" data-filter-type="${type}">
       ${name}
-      ${type !== 'all' ? `<span class="main-navigation__item-count" data-filter-type="${type}">${count}</span>` : ''}</a>`
+      ${type !== 'all' ? `<span class="main-navigation__item-count">${count}</span>` : ''}</a>`
     );
   };
 
-  const filterTemplate = filters.map((filter) => getFilterTemplate(filter, currentFilterType)).join('');
+  const filterTemplate = filters.map((filter) => getFilterTemplate(filter, currentMenuButton)).join('');
 
   return (
     `<nav class="main-navigation">
       <div class="main-navigation__items">
-        ${filterTemplate}
-      </div>
-      <a href="#stats" class="main-navigation__additional">Stats</a>
+        ${filterTemplate}            
+      </div>   
+      <a href="#stats" class="main-navigation__additional ${currentMenuButton === STATISTIC_BOARD ? 'main-navigation__item--active' : ''}">Stats</a> 
     </nav>`
   );
 };
 
-export default class FilterView extends AbstractView {
-  constructor(filters, currentFilterType) {
+export default class MenuView extends AbstractView {
+  constructor(filters, currentMenuButton) {
     super();
     this._filters = filters;
-    this._currentFilterType = currentFilterType;
+    this._currentMenuButton = currentMenuButton;
 
     this._filterTypeClickHandler = this._filterTypeClickHandler.bind(this);
     this._statisticHandler = this._statisticHandler.bind(this);
   }
 
   getTemplate() {
-    return createFilterViewTemplate(this._filters, this._currentFilterType);
+    return createMenuViewTemplate(this._filters, this._currentMenuButton);
   }
 
   _filterTypeClickHandler(evt) {
@@ -50,7 +51,7 @@ export default class FilterView extends AbstractView {
 
   setFilterTypeClickHandler(callback) {
     this._callback.filterTypeClick = callback;
-    this.getElement().querySelectorAll('.main-navigation__item ')
+    this.getElement().querySelectorAll('.main-navigation__item')
       .forEach((element) => element.addEventListener('click', this._filterTypeClickHandler));
   }
 

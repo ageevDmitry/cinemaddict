@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract.js';
-// import {getFilmDuration} from '../utils/films.js';
 
 const FILM_DESCRIPTION_LENGTH = 140;
 const isFilmFlag = (flag) => (flag) ? 'film-card__controls-item--active' : '';
@@ -13,7 +12,6 @@ export const createFilmCardViewTemplate = (film) => {
   const isWatchedClassName = isFilmFlag(isWatched);
   const isFavoriteClassName = isFilmFlag(isFavorite);
   const filmCommentsCount = film.commentsId.length;
-  // const filmDuration = getFilmDuration(runtime);
 
   return (
     `<article class="film-card">
@@ -55,7 +53,10 @@ export default class FilmCardView extends AbstractView {
 
   _filmCardClickHandler(evt) {
     evt.preventDefault();
-    this._callback.openClick();
+
+    if (evt.target.tagName !== 'BUTTON') {
+      this._callback.openClick();
+    }
   }
 
   _watchlistClickHandler(evt) {
@@ -76,9 +77,7 @@ export default class FilmCardView extends AbstractView {
   setFilmCardClickHandler(callback) {
     this._callback.openClick = callback;
 
-    this.getElement().querySelectorAll('.film-card__poster, .film-card__title, .film-card__comments').forEach((elem) => {
-      elem.addEventListener('click', this._filmCardClickHandler);
-    });
+    this.getElement().addEventListener('click', this._filmCardClickHandler);
   }
 
   setWatchlistClickHandler(callback) {

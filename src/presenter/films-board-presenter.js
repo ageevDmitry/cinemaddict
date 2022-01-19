@@ -147,16 +147,16 @@ export default class FilmsBoardPresenter {
 
     this._filterType = this._filterModel.getFilter();
     const films = this._filmsModel.getFilms();
-    const filtredFilms = filter[this._filterType](films);
+    const filtredFilms = Array.from(filter[this._filterType](films));
 
     switch (this._currentSortType) {
+      case SortType.DEFAULT:
+        return filtredFilms;
       case SortType.DATE:
         return filtredFilms.sort(sortFilmsDate);
       case SortType.RATING:
         return filtredFilms.sort(sortFilmsRating);
     }
-
-    return filtredFilms;
   }
 
   _getComments() {
@@ -183,11 +183,10 @@ export default class FilmsBoardPresenter {
 
   _checkCountFilms() {
 
-    const filmCount = this._getFilms().length;
     const popup = document.querySelector('.film-details');
 
-    if (filmCount <= 5 && !popup) {
-      this._clearBoard({resetRenderedFilmCount: true, resetSortType: true});
+    if (!popup) {
+      this._clearBoard({resetRenderedFilmCount: true});
       this._renderBoard();
     }
   }
@@ -306,8 +305,9 @@ export default class FilmsBoardPresenter {
 
   _renderStatisticBoard() {
     this._statisticBoardComponent = new StatisticBoardView(this._filmsModel.getFilms(), this._userRank);
-    this._statisticBoardComponent.setStatisticPeriodClickHandlers();
     render(this._boardContainer, this._statisticBoardComponent);
+    this._statisticBoardComponent.renderChart();
+    this._statisticBoardComponent.setStatisticPeriodClickHandlers();
   }
 
   init() {
