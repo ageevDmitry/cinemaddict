@@ -37,6 +37,7 @@ export default class FilmsBoardPresenter {
     this._currentSortType = SortType.DEFAULT;
     this._renderedFilmCount = CARD_FILMS_COUNT_PER_STEP;
     this._isLoading = true;
+    this._isShowMoreButtonDeleted = null;
     this._filmPresenter = new Map();
     this._api = api;
     this._handleViewAction = this._handleViewAction.bind(this);
@@ -49,7 +50,6 @@ export default class FilmsBoardPresenter {
     this._filterModel.addObserver(this._handleModelEvent);
     this._commentsModel.addObserver(this._handleModelEvent);
     this._filmsModel.addObserver(this._handleModelEvent);
-
   }
 
   _handleViewAction(actionType, updateType, updateFilm, updateComment) {
@@ -93,6 +93,7 @@ export default class FilmsBoardPresenter {
         this._renderUserRank();
         break;
       case UpdateType.MAJOR:
+        this._isShowMoreButtonDeleted = null;
         this._renderedFilmCount = CARD_FILMS_COUNT_PER_STEP;
         this._clearBoard({resetRenderedFilmCount: true, resetSortType: true});
         this._renderBoard();
@@ -140,6 +141,7 @@ export default class FilmsBoardPresenter {
 
     if (this._renderedFilmCount >= filmCount) {
       remove(this._buttonShowMoreComponent);
+      this._isShowMoreButtonDeleted = true;
     }
   }
 
@@ -213,6 +215,10 @@ export default class FilmsBoardPresenter {
       this._renderNoFilms();
     } else {
       this._renderFilms(films.slice(0, Math.min(filmCount, this._renderedFilmCount)));
+    }
+
+    if (this._isShowMoreButtonDeleted === true) {
+      return;
     }
 
     if (filmCount > CARD_FILMS_COUNT_PER_STEP) {
