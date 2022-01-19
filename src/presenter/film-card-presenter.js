@@ -189,15 +189,17 @@ export default class FilmsCardPresenter {
     this._filmPopupComponent.removeElement();
   }
 
-  init(film, comments) {
+
+  init(film, comments, error) {
     this._film = film;
     this._comments = comments;
+    this._error = error;
 
     const prevFilmCardComponent = this._filmCardComponent;
     const prevFilmPopupComponent = this._filmPopupComponent;
 
     this._filmCardComponent = new FilmCardView(this._film, this._comments);
-    this._filmPopupComponent = new FilmPopupView(this._film, this._comments);
+    this._filmPopupComponent = new FilmPopupView(this._film, this._comments, this._error);
 
     if (prevFilmCardComponent === null || prevFilmPopupComponent === null) {
       this._renderFilmCard();

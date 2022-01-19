@@ -4,14 +4,14 @@ import AbstractView from './abstract.js';
 const FILM_DESCRIPTION_LENGTH = 140;
 const isFilmFlag = (flag) => (flag) ? 'film-card__controls-item--active' : '';
 
-export const createFilmCardViewTemplate = (film) => {
+export const createFilmCardViewTemplate = (film, comments) => {
 
   const {poster, title, rating, releaseDate, runtime, genres, description, isWatchlist, isWatched, isFavorite} = film;
   const limitDescription = `${description.substr(0, FILM_DESCRIPTION_LENGTH)}...`;
   const isWatchlistClassName = isFilmFlag(isWatchlist);
   const isWatchedClassName = isFilmFlag(isWatched);
   const isFavoriteClassName = isFilmFlag(isFavorite);
-  const filmCommentsCount = film.commentsId.length;
+  const filmCommentsCount = comments.length;
 
   return (
     `<article class="film-card">
@@ -38,9 +38,10 @@ export const createFilmCardViewTemplate = (film) => {
 };
 
 export default class FilmCardView extends AbstractView {
-  constructor(film) {
+  constructor(film, comments) {
     super();
     this._film = film;
+    this._comments = comments;
     this._filmCardClickHandler = this._filmCardClickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
@@ -48,7 +49,7 @@ export default class FilmCardView extends AbstractView {
   }
 
   getTemplate() {
-    return createFilmCardViewTemplate(this._film);
+    return createFilmCardViewTemplate(this._film, this._comments);
   }
 
   _filmCardClickHandler(evt) {

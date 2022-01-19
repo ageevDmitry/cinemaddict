@@ -25,7 +25,7 @@ const createCommentTemplate = (comment) => {
   );
 };
 
-const createFilmPopupViewTemplate = (film, comments, data) => {
+const createFilmPopupViewTemplate = (film, comments, data, error) => {
 
   const {poster, title, originalTitle, rating, director, writers, actors, releaseDate, country, genres, description, ageLimit, runtime, isWatchlist, isWatched, isFavorite} = film;
 
@@ -148,9 +148,13 @@ const createFilmPopupViewTemplate = (film, comments, data) => {
             <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${filmCommentsCount}</span></h3>
 
             <ul class="film-details__comments-list">
-              ${filmCommentsTemplate}
+            ${error === true ? `
+              <li class="film-details__comment">
+                <div>
+                  <p class="film-details__comment-text">!!!Комментарии не загрузились!!!</p>
+                </div>              
+              </li>`: `${filmCommentsTemplate}`}
             </ul>
-
             <div class="film-details__new-comment">
               ${userCommentTemplate}
               <div class="film-details__emoji-list">
@@ -165,10 +169,11 @@ const createFilmPopupViewTemplate = (film, comments, data) => {
 };
 
 export default class FilmPopupView extends SmartView {
-  constructor(film, comments) {
+  constructor(film, comments, error) {
     super();
     this._film = film;
     this._comments = comments;
+    this._error = error;
     this._data = {
       emoji: null,
       text: null,
@@ -187,7 +192,7 @@ export default class FilmPopupView extends SmartView {
   }
 
   getTemplate() {
-    return createFilmPopupViewTemplate(this._film, this._comments, this._data);
+    return createFilmPopupViewTemplate(this._film, this._comments, this._data, this._error);
   }
 
   _inputTextComment (evt) {

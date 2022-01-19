@@ -37,7 +37,7 @@ export default class FilmsBoardPresenter {
     this._currentSortType = SortType.DEFAULT;
     this._renderedFilmCount = CARD_FILMS_COUNT_PER_STEP;
     this._isLoading = true;
-    this._isShowMoreButtonDeleted = null;
+    this._isShowMoreButtonDeleted = false;
     this._filmPresenter = new Map();
     this._api = api;
     this._handleViewAction = this._handleViewAction.bind(this);
@@ -65,6 +65,8 @@ export default class FilmsBoardPresenter {
         this._api.getComments(updateFilm)
           .then((comments) => {
             this._commentsModel.setComments(updateType, updateFilm, comments.map(this._commentsModel.adaptCommentToClient));
+          }).catch(()=> {
+            this._filmPresenter.get(updateFilm.id).init(updateFilm, this._getComments(), true);
           });
         break;
       case UserAction.ADD_COMMENT:
@@ -87,13 +89,13 @@ export default class FilmsBoardPresenter {
 
     switch (updateType) {
       case UpdateType.MINOR:
-        this._filmPresenter.get(updateFilm.id).init(updateFilm, this._getComments());
+        this._filmPresenter.get(updateFilm.id).init(updateFilm, this._getComments(), {commentError: false});
         this._checkCountFilms();
         remove(this._userRankComponent);
         this._renderUserRank();
         break;
       case UpdateType.MAJOR:
-        this._isShowMoreButtonDeleted = null;
+        this._isShowMoreButtonDeleted = false;
         this._renderedFilmCount = CARD_FILMS_COUNT_PER_STEP;
         this._clearBoard({resetRenderedFilmCount: true, resetSortType: true});
         this._renderBoard();
