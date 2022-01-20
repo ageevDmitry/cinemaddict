@@ -39,3 +39,4 @@ export default class Smart extends Abstract {
     throw new Error('Abstract method not implemented: restoreHandlers');
   }
 }
+

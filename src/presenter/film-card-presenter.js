@@ -2,7 +2,7 @@ import {ESCAPE} from '../const.js';
 import FilmCardView from '../view/film-card-view.js';
 import FilmPopupView from '../view/film-popup-view.js';
 import {render, remove, replace} from '../utils/render.js';
-import {UserAction, UpdateType} from '../const.js';
+import {UserAction, UpdateType, CommentsStatus} from '../const.js';
 
 const START_POPUP_SCROLL = 0;
 
@@ -223,5 +223,9 @@ export default class FilmsCardPresenter {
     prevFilmCardComponent.removeElement();
     remove(prevFilmPopupComponent);
     prevFilmPopupComponent.removeElement();
+
+    if (commentsStatus === CommentsStatus.COMMENTS_NO_SEND) {
+      this._filmPopupComponent.shake();
+    }
   }
 }

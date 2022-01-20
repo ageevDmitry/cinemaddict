@@ -276,6 +276,10 @@ export default class FilmPopupView extends SmartView {
     );
   }
 
+  snake() {
+    this.snake();
+  }
+
   restoreHandlers() {
     this.setInnerHandlers();
     this.setClosePopupClickHandler(this._callback.click);
