@@ -28,15 +28,15 @@ export default class Api {
 
   getComments(film) {
 
-    // return this._load({url: `comments/${film.id}`})
-    return this._load({url: ``})
+    return this._load({url: `comments/${film.id}`})
+    // return this._load({url: ``})
       .then(Api.toJSON);
   }
 
   addComment(comment, film) {
     return this._load({
-      // url: `comments/${film.id}`,
-      url: ``,
+      url: `comments/${film.id}`,
+      // url: ``,
       method: MethodApi.POST,
       body: JSON.stringify(comment),
       headers: new Headers({'Content-Type': 'application/json'}),

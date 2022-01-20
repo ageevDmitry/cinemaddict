@@ -1,12 +1,15 @@
 import he from 'he';
 import SmartView from './smart.js';
 import dayjs from 'dayjs';
-import {COMMENT_EMOJIS} from '../const.js';
+import {COMMENT_EMOJIS, CommentsStatus, ENTER} from '../const.js';
 import {getFilmDuration} from '../utils/films.js';
 
-const createCommentTemplate = (comment) => {
+const createCommentTemplate = (comment, commentsStatus, deleteCommentId) => {
 
   const {id, emoji, text, author, day} = comment;
+
+  const deletingStatusButtonTemplate = '<button="film-details__comment-delete">Deleting...</button>';
+  const deleteButtonTemplate = `<button class="film-details__comment-delete" data-comment-id="${id}">Delete</button>`;
 
   return (
     `<li class="film-details__comment">
@@ -18,14 +21,14 @@ const createCommentTemplate = (comment) => {
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
           <span class="film-details__comment-day">${dayjs(day).format('DD MMMM YYYY')}</span>
-          <button class="film-details__comment-delete" data-comment-id="${id}">Delete</button>
+          ${commentsStatus === CommentsStatus.COMMENTS_DELETING && id === deleteCommentId ? `${deletingStatusButtonTemplate}`: `${deleteButtonTemplate}`}
         </p>
         </div>
     </li>`
   );
 };
 
-const createFilmPopupViewTemplate = (film, comments, data, error) => {
+const createFilmPopupViewTemplate = (film, comments, data, commentsStatus, deleteCommentId) => {
 
   const {poster, title, originalTitle, rating, director, writers, actors, releaseDate, country, genres, description, ageLimit, runtime, isWatchlist, isWatched, isFavorite} = film;
 
@@ -57,7 +60,15 @@ const createFilmPopupViewTemplate = (film, comments, data, error) => {
     </label>`
   );
 
-  const filmCommentsTemplate = comments.map((comment) => createCommentTemplate(comment)).join('');
+  const createCommentsNoLoadTemplate = () => (
+    `<li class="film-details__comment">
+      <div>
+        <p class="film-details__comment-text">!!!Комментарии не загрузились!!!</p>
+      </div>              
+    </li>`
+  );
+
+  const filmCommentsTemplate = comments.map((comment) => createCommentTemplate(comment, commentsStatus, deleteCommentId)).join('');
   const writersTemplate = writers.join(', ');
   const actorsTemplate = actors.join(', ');
   const genreTitle = genres.length > 1 ? 'Genres' : 'Genre';
@@ -148,12 +159,7 @@ const createFilmPopupViewTemplate = (film, comments, data, error) => {
             <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${filmCommentsCount}</span></h3>
 
             <ul class="film-details__comments-list">
-            ${error === true ? `
-              <li class="film-details__comment">
-                <div>
-                  <p class="film-details__comment-text">!!!Комментарии не загрузились!!!</p>
-                </div>              
-              </li>`: `${filmCommentsTemplate}`}
+            ${commentsStatus === CommentsStatus.COMMENTS_NO_LOAD ? `${createCommentsNoLoadTemplate()}`: `${filmCommentsTemplate}`}
             </ul>
             <div class="film-details__new-comment">
               ${userCommentTemplate}
@@ -174,11 +180,11 @@ export default class FilmPopupView extends SmartView {
     this._film = film;
     this._comments = comments;
     this._commentsStatus = commentsStatus;
-    console.log(this._commentsStatus);
     this._data = {
       emoji: null,
       text: null,
     };
+    this._deleteCommentId = null;
 
     this._inputTextComment = this._inputTextComment.bind(this);
     this._choiceEmojiComment = this._choiceEmojiComment.bind(this);
@@ -193,7 +199,7 @@ export default class FilmPopupView extends SmartView {
   }
 
   getTemplate() {
-    return createFilmPopupViewTemplate(this._film, this._comments, this._data, this._error);
+    return createFilmPopupViewTemplate(this._film, this._comments, this._data, this._commentsStatus, this._deleteCommentId);
   }
 
   _inputTextComment (evt) {
@@ -233,7 +239,7 @@ export default class FilmPopupView extends SmartView {
 
   _addCommentKeyDownHandler(evt) {
 
-    if (evt.key === 'Enter' && evt.ctrlKey) {
+    if (evt.key === ENTER && evt.ctrlKey) {
 
       if (this._data.emoji === null || this._data.text === null) {
         return;
@@ -252,6 +258,9 @@ export default class FilmPopupView extends SmartView {
       return;
     }
     this._callback.deleteCommentClick(evt.target.dataset.commentId);
+    this._commentsStatus = CommentsStatus.COMMENTS_DELETING;
+    this._deleteCommentId = evt.target.dataset.commentId;
+    this.updateElement();
   }
 
   reset() {

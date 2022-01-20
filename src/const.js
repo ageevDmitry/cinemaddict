@@ -6,6 +6,7 @@ export const COMMENT_EMOJIS = [
 ];
 
 export const ESCAPE = 'Escape';
+export const ENTER = 'Enter';
 
 export const START_STATISTIC_PERIOD = 'all-time';
 
@@ -59,4 +60,5 @@ export const CommentsStatus = {
   COMMENTS_LOAD: 'COMMENTS_LOAD',
   COMMENTS_NO_LOAD: 'COMMENTS_NO_LOAD',
   COMMENTS_NO_SEND: 'COMMENTS_NO_SEND',
+  COMMENTS_DELETING: 'COMMENTS_DELETING',
 };
