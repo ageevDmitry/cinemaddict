@@ -11,7 +11,7 @@ import StatisticBoardView from '../view/statistic-board-view.js';
 import {render, remove} from '../utils/render.js';
 import {sortFilmsDate, sortFilmsRating} from '../utils/common.js';
 import {filter} from '../utils/filter.js';
-import {SortType, UpdateType, UserAction, FilterType} from '../const.js';
+import {SortType, UpdateType, UserAction, FilterType, CommentsStatus} from '../const.js';
 import {generateUserRank} from '../utils/user-rank.js';
 
 const CARD_FILMS_COUNT_PER_STEP = 5;
@@ -66,7 +66,7 @@ export default class FilmsBoardPresenter {
           .then((comments) => {
             this._commentsModel.setComments(updateType, updateFilm, comments.map(this._commentsModel.adaptCommentToClient));
           }).catch(()=> {
-            this._filmPresenter.get(updateFilm.id).init(updateFilm, this._getComments(), true);
+            this._filmPresenter.get(updateFilm.id).init(updateFilm, this._getComments(), CommentsStatus.COMMENTS_NO_LOAD);
           });
         break;
       case UserAction.ADD_COMMENT:
@@ -74,6 +74,8 @@ export default class FilmsBoardPresenter {
           .then((response) => {
             this._commentsModel.setComments(updateType, updateFilm, response.comments.map(this._commentsModel.adaptCommentToClient));
             this._filmsModel.updateFilm(updateType, this._filmsModel.adaptFilmToClient(response.movie));
+          }).catch(()=> {
+            this._filmPresenter.get(updateFilm.id).init(updateFilm, this._getComments(), CommentsStatus.COMMENTS_NO_SEND);
           });
         break;
       case UserAction.DELETE_COMMENT:
@@ -89,7 +91,7 @@ export default class FilmsBoardPresenter {
 
     switch (updateType) {
       case UpdateType.MINOR:
-        this._filmPresenter.get(updateFilm.id).init(updateFilm, this._getComments(), {commentError: false});
+        this._filmPresenter.get(updateFilm.id).init(updateFilm, this._getComments(), CommentsStatus.COMMENTS_LOAD);
         this._checkCountFilms();
         remove(this._userRankComponent);
         this._renderUserRank();
@@ -295,8 +297,8 @@ export default class FilmsBoardPresenter {
     films.forEach((film) => {
       const comments = this._getComments(film);
       const filmsCardPresenter = new FilmsCardPresenter(this._filmsContainerComponent, this._handleViewAction, this._handleModeChange, this._checkCountFilms);
-      filmsCardPresenter.init(film, comments);
-      this._filmPresenter.set(film.id, filmsCardPresenter);
+      filmsCardPresenter.init(film, comments, CommentsStatus.COMMENTS_LOAD);
+      this._filmPresenter.set(film.id, filmsCardPresenter, CommentsStatus.COMMENTS_LOAD);
     });
   }
 

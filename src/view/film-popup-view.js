@@ -65,7 +65,7 @@ const createFilmPopupViewTemplate = (film, comments, data, error) => {
   const isWatchlistClassName = isFilmFlag(isWatchlist);
   const isWatchedClassName = isFilmFlag(isWatched);
   const isFavoriteClassName = isFilmFlag(isFavorite);
-  const filmCommentsCount = comments.length;
+  const filmCommentsCount = film.commentsId.length;
   const userCommentTemplate = createUserCommentTemplate(data);
   const emojiInputTemplate = COMMENT_EMOJIS.map((emojiInput) => createEmojiTemplate(emojiInput)).join('');
   const filmDuration = getFilmDuration(runtime);
@@ -169,11 +169,12 @@ const createFilmPopupViewTemplate = (film, comments, data, error) => {
 };
 
 export default class FilmPopupView extends SmartView {
-  constructor(film, comments, error) {
+  constructor(film, comments, commentsStatus) {
     super();
     this._film = film;
     this._comments = comments;
-    this._error = error;
+    this._commentsStatus = commentsStatus;
+    console.log(this._commentsStatus);
     this._data = {
       emoji: null,
       text: null,

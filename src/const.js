@@ -54,3 +54,9 @@ export const StatisticRadioButton = [
   { type : 'month', name : 'Month'},
   { type : 'year', name : 'Year'},
 ];
+
+export const CommentsStatus = {
+  COMMENTS_LOAD: 'COMMENTS_LOAD',
+  COMMENTS_NO_LOAD: 'COMMENTS_NO_LOAD',
+  COMMENTS_NO_SEND: 'COMMENTS_NO_SEND',
+};

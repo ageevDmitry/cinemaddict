@@ -190,16 +190,16 @@ export default class FilmsCardPresenter {
   }
 
 
-  init(film, comments, error) {
+  init(film, comments, commentsStatus) {
     this._film = film;
     this._comments = comments;
-    this._error = error;
+    this._commentsStatus = commentsStatus;
 
     const prevFilmCardComponent = this._filmCardComponent;
     const prevFilmPopupComponent = this._filmPopupComponent;
 
-    this._filmCardComponent = new FilmCardView(this._film, this._comments);
-    this._filmPopupComponent = new FilmPopupView(this._film, this._comments, this._error);
+    this._filmCardComponent = new FilmCardView(this._film);
+    this._filmPopupComponent = new FilmPopupView(this._film, this._comments, this._commentsStatus);
 
     if (prevFilmCardComponent === null || prevFilmPopupComponent === null) {
       this._renderFilmCard();
