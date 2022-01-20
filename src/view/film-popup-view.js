@@ -28,7 +28,7 @@ const createCommentTemplate = (comment, commentsStatus, deleteCommentId) => {
   );
 };
 
-const createFilmPopupViewTemplate = (film, comments, data, commentsStatus, deleteCommentId) => {
+const createFilmPopupViewTemplate = (film, comments, data, commentsStatus, deleteCommentId, isTextAreaDisabled) => {
 
   const {poster, title, originalTitle, rating, director, writers, actors, releaseDate, country, genres, description, ageLimit, runtime, isWatchlist, isWatched, isFavorite} = film;
 
@@ -48,7 +48,8 @@ const createFilmPopupViewTemplate = (film, comments, data, commentsStatus, delet
           ${imgEmodji}
         </div>
         <label class="film-details__comment-label">
-          <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${userText}</textarea>
+          <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"  
+          ${isTextAreaDisabled === true ? 'disabled' : ''}>${userText}</textarea>
         </label>`
     );
   };
@@ -185,6 +186,7 @@ export default class FilmPopupView extends SmartView {
       text: null,
     };
     this._deleteCommentId = null;
+    this._isTextAreaDisabled = false;
 
     this._inputTextComment = this._inputTextComment.bind(this);
     this._choiceEmojiComment = this._choiceEmojiComment.bind(this);
@@ -199,7 +201,7 @@ export default class FilmPopupView extends SmartView {
   }
 
   getTemplate() {
-    return createFilmPopupViewTemplate(this._film, this._comments, this._data, this._commentsStatus, this._deleteCommentId);
+    return createFilmPopupViewTemplate(this._film, this._comments, this._data, this._commentsStatus, this._deleteCommentId, this._isTextAreaDisabled);
   }
 
   _inputTextComment (evt) {
@@ -247,6 +249,8 @@ export default class FilmPopupView extends SmartView {
 
       evt.preventDefault();
       this._callback.addCommentKeyDown(this._data.emoji, this._data.text);
+      this._isTextAreaDisabled = true;
+      this.updateElement();
       document.removeEventListener('keydown', this._addCommentKeyDownHandler);
     }
   }
