@@ -63,7 +63,7 @@ const createFilmPopupViewTemplate = (film, comments, data, commentsStatus, delet
   const createCommentsNoLoadTemplate = () => (
     `<li class="film-details__comment">
       <div>
-        <p class="film-details__comment-text">!!!Комментарии не загрузились!!!</p>
+        <p class="film-details__comment-text">!!!COMMENTS HASN'T LOADED!!!</p>
       </div>              
     </li>`
   );

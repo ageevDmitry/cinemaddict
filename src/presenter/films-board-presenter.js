@@ -82,6 +82,8 @@ export default class FilmsBoardPresenter {
         this._api.deleteComment(updateComment)
           .then(() => {
             this._deleteComment(updateType, updateFilm, updateComment);
+          }).catch(()=> {
+            this._filmPresenter.get(updateFilm.id).init(updateFilm, this._getComments(), CommentsStatus.COMMENT_NO_DELETE);
           });
         break;
     }
