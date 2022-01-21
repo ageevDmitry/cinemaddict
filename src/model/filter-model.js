@@ -2,17 +2,19 @@ import AbstractObserver from '../utils/abstract-observer.js';
 import {FilterType} from '../const.js';
 
 export default class Filter extends AbstractObserver {
+  #activeFilter = null;
+
   constructor() {
     super();
-    this._activeFilter = FilterType.ALL_MOVIES;
+    this.#activeFilter = FilterType.ALL_MOVIES;
   }
 
   setFilter(updateType, filter) {
-    this._activeFilter = filter;
+    this.#activeFilter = filter;
     this._notify(updateType, filter);
   }
 
   getFilter() {
-    return this._activeFilter;
+    return this.#activeFilter;
   }
 }

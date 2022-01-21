@@ -1,32 +1,34 @@
 import AbstractObserver from '../utils/abstract-observer.js';
 
 export default class FilmsModel extends AbstractObserver {
+  #fims = null;
+
   constructor() {
     super();
-    this._films = [];
+    this.#fims = [];
   }
 
   setFilms(updateType, films) {
-    this._films = films.slice();
+    this.#fims = films.slice();
 
     this._notify(updateType);
   }
 
   getFilms() {
-    return this._films;
+    return this.#fims;
   }
 
   updateFilm(updateType, updateFilm) {
-    const index = this._films.findIndex((film) => film.id === updateFilm.id);
+    const index = this.#fims.findIndex((film) => film.id === updateFilm.id);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting task');
     }
 
-    this._films = [
-      ...this._films.slice(0, index),
+    this.#fims = [
+      ...this.#fims.slice(0, index),
       updateFilm,
-      ...this._films.slice(index + 1),
+      ...this.#fims.slice(index + 1),
     ];
 
     this._notify(updateType, updateFilm);

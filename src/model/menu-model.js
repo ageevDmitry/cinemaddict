@@ -2,17 +2,19 @@ import AbstractObserver from '../utils/abstract-observer.js';
 import {FilterType} from '../const.js';
 
 export default class MenuModel extends AbstractObserver {
+  #activeMenuButton = null;
+
   constructor() {
     super();
-    this._activeMenuButton = FilterType.ALL_MOVIES;
+    this.#activeMenuButton = FilterType.ALL_MOVIES;
   }
 
   setMenuButton(updateType, menuButton) {
-    this._activeMenuButton = menuButton;
+    this.#activeMenuButton = menuButton;
     this._notify(updateType, menuButton);
   }
 
   getMenuButton() {
-    return this._activeMenuButton;
+    return this.#activeMenuButton;
   }
 }
