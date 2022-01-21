@@ -48,7 +48,7 @@ export const MethodApi = {
   POST: 'POST',
 };
 
-export const StatisticRadioButton = [
+export const statisticRadioButtons = [
   { type : 'all-time', name : 'All time'},
   { type : 'today', name : 'Today'},
   { type : 'week', name : 'Week'},

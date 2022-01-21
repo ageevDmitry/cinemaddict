@@ -1,7 +1,7 @@
 import Smart from './smart.js';
 import {Chart} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {FilterType, StatisticRadioButton, START_STATISTIC_PERIOD} from '../const.js';
+import {FilterType, statisticRadioButtons, START_STATISTIC_PERIOD} from '../const.js';
 import {filter} from '../utils/filter.js';
 import {getChartData, getTopGenre, getChartDuration, isBetweenDate} from '../utils/films.js';
 
@@ -19,7 +19,7 @@ const createStatisticBoardViewTemplate = (userRank, watchedCount, totalDuration,
 
   const getStatisticFormTemplate = () => {
 
-    const statisticRadioButtonTemplate = StatisticRadioButton.map((button) => getStatisticRadioButtonTemplate(button)).join('');
+    const statisticRadioButtonTemplate = statisticRadioButtons.map((button) => getStatisticRadioButtonTemplate(button)).join('');
 
     return (
       `<form action="https:cho.htmlacademy.ru/" method="get" class="statistic__filters">
