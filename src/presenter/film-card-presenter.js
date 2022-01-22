@@ -20,9 +20,9 @@ export default class FilmsCardPresenter {
   #changeData = null;
   #changeMode = null;
   #checkCountFilms = null;
-  #mode = null;
-  #currentPopupScroll = null;
   #commentsStatus = null;
+  #mode = Mode.FILM_CARD;
+  #currentPopupScroll = START_POPUP_SCROLL;
 
   constructor(filmContainer, changeData, changeMode, checkCountFilms) {
 
@@ -30,8 +30,7 @@ export default class FilmsCardPresenter {
     this.#changeData = changeData;
     this.#changeMode = changeMode;
     this.#checkCountFilms = checkCountFilms;
-    this.#mode = Mode.FILM_CARD;
-    this.#currentPopupScroll = START_POPUP_SCROLL;
+
     this.#handleAddCommentKeyDown = this.#handleAddCommentKeyDown.bind(this);
     this.#handleDeleteCommentClick = this.#handleDeleteCommentClick.bind(this);
     this.#handleWatchlistClick = this.#handleWatchlistClick.bind(this);

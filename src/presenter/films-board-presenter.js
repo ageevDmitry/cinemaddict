@@ -98,11 +98,11 @@ export default class FilmsBoardPresenter {
     }
   }
 
-  #handleModelEvent = (updateType, updateFilm) => {
+  #handleModelEvent = (updateType, updateElement) => {
 
     switch (updateType) {
       case UpdateType.MINOR:
-        this.#filmPresenter.get(updateFilm.id).init(updateFilm, this.#getComments(), CommentsStatus.COMMENTS_LOAD);
+        this.#filmPresenter.get(updateElement.id).init(updateElement, this.#getComments(), CommentsStatus.COMMENTS_LOAD);
         this.#checkCountFilms();
         remove(this.#userRankComponent);
         this.#renderUserRank();
@@ -146,7 +146,6 @@ export default class FilmsBoardPresenter {
   #handleShowMoreClick = () => {
 
     const filmCount = this.#getFilms().length;
-
     const newRenderedFilmCount = Math.min(filmCount, this.#renderedFilmCount + CARD_FILMS_COUNT_PER_STEP);
     const films = this.#getFilms().slice(this.#renderedFilmCount, newRenderedFilmCount);
 
@@ -177,6 +176,7 @@ export default class FilmsBoardPresenter {
   }
 
   #getComments = () => {
+
     const comments = this.#commentsModel.getComments();
 
     return comments;
@@ -295,10 +295,12 @@ export default class FilmsBoardPresenter {
   }
 
   #renderLoading = () => {
+
     render(this.#filmsContainerComponent, this.#loadingComponent);
   }
 
   #renderNoFilms = () => {
+
     this.#noFilmsComponent = new NoFilmsView(this.#filterType);
     render(this.#filmsContainerComponent, this.#noFilmsComponent);
   }
@@ -321,17 +323,22 @@ export default class FilmsBoardPresenter {
     this.#buttonShowMoreComponent = new ButtonShowMoreView();
 
     render(this.#filmsListComponent, this.#buttonShowMoreComponent);
+
     this.#buttonShowMoreComponent.setClickHandler(this.#handleShowMoreClick);
   }
 
   #renderStatisticBoard = () => {
+
     this.#statisticBoardComponent = new StatisticBoardView(this.#filmsModel.getFilms(), this.#userRank);
+
     render(this.#boardContainer, this.#statisticBoardComponent);
+
     this.#statisticBoardComponent.renderChart();
     this.#statisticBoardComponent.setStatisticPeriodClickHandlers();
   }
 
   init() {
+
     this.#api.getFilms()
       .then((films) => {
         this.#filmsModel.setFilms(UpdateType.INIT, films.map(this.#filmsModel.adaptFilmToClient));
