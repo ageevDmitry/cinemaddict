@@ -4,56 +4,60 @@ import {filter} from '../utils/filter.js';
 import {FilterType, UpdateType} from '../const.js';
 
 export default class FilterPresenter {
+  #filterContainer = null;
+  #filterModel = null;
+  #filmsModel = null;
+  #filterComponent = null;
+
   constructor(filterContainer, filterModel, filmsModel) {
-    this._filterContainer = filterContainer;
-    this._filterModel = filterModel;
-    this._filmsModel = filmsModel;
 
-    this._filterComponent = null;
+    this.#filterContainer = filterContainer;
+    this.#filterModel = filterModel;
+    this.#filmsModel = filmsModel;
 
-    this._handleModelEvent = this._handleModelEvent.bind(this);
-    this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
-    this._handleStatisticRender = this._handleStatisticRender.bind(this);
+    this.#handleModelEvent = this.#handleModelEvent.bind(this);
+    this.#handleFilterTypeChange = this.#handleFilterTypeChange.bind(this);
+    this.#handleStatisticRender = this.#handleStatisticRender.bind(this);
 
-    this._filmsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
+    this.#filmsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   init() {
-    const filters = this._getFilters();
-    const prevFilterComponent = this._filterComponent;
+    const filters = this.#getFilters();
+    const prevFilterComponent = this.#filterComponent;
 
-    this._filterComponent = new FilterView(filters, this._filterModel.getFilter());
-    this._filterComponent.setFilterTypeClickHandler(this._handleFilterTypeChange);
-    this._filterComponent.setStatisticClickHandler(this._handleStatisticRender);
+    this.#filterComponent = new FilterView(filters, this.#filterModel.getFilter());
+    this.#filterComponent.setFilterTypeClickHandler(this.#handleFilterTypeChange);
+    this.#filterComponent.setStatisticClickHandler(this.#handleStatisticRender);
 
     if (prevFilterComponent === null) {
-      render(this._filterContainer, this._filterComponent);
+      render(this.#filterContainer, this.#filterComponent);
       return;
     }
 
-    replace(this._filterComponent, prevFilterComponent);
+    replace(this.#filterComponent, prevFilterComponent);
     remove(prevFilterComponent);
   }
 
-  _handleModelEvent() {
+  #handleModelEvent = () => {
     this.init();
   }
 
-  _handleFilterTypeChange(filterType) {
-    if (this._filterModel.getFilter() === filterType) {
+  #handleFilterTypeChange = (filterType) => {
+    if (this.#filterModel.getFilter() === filterType) {
       return;
     }
 
-    this._filterModel.setFilter(UpdateType.MAJOR, filterType);
+    this.#filterModel.setFilter(UpdateType.MAJOR, filterType);
   }
 
-  _handleStatisticRender() {
-    this._filterModel.setFilter(UpdateType.STATISTIC, 'STATS');
+  #handleStatisticRender = () => {
+    this.#filterModel.setFilter(UpdateType.STATISTIC, 'STATS');
   }
 
-  _getFilters() {
-    const films = this._filmsModel.getFilms();
+  #getFilters = () => {
+    const films = this.#filmsModel.getFilms();
 
     return [
       {

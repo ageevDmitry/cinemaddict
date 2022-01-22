@@ -40,16 +40,19 @@ export default class FilmsCardPresenter {
   }
 
   #getCurrentScrollPopup = () => {
+
     const popupCloseScroll = document.querySelector('.film-details');
     this.#currentPopupScroll = popupCloseScroll.scrollTop;
   }
 
   #setCurrentScrollPopup = () => {
+
     const popup = document.querySelector('.film-details');
     popup.scrollTo(0, this.#currentPopupScroll);
   }
 
   #handleWatchlistClick = () => {
+
     this.#changeData(
       UserAction.UPDATE_FILM,
       UpdateType.MINOR,
@@ -64,6 +67,7 @@ export default class FilmsCardPresenter {
   }
 
   #handleWatchedClick = () => {
+
     this.#changeData(
       UserAction.UPDATE_FILM,
       UpdateType.MINOR,
@@ -78,6 +82,7 @@ export default class FilmsCardPresenter {
   }
 
   #handleFavoritesClick = () => {
+
     this.#changeData(
       UserAction.UPDATE_FILM,
       UpdateType.MINOR,
@@ -92,6 +97,7 @@ export default class FilmsCardPresenter {
   }
 
   #handleLoadComment = () => {
+
     this.#changeData(
       UserAction.LOAD_COMMENT,
       UpdateType.MINOR,
@@ -101,6 +107,7 @@ export default class FilmsCardPresenter {
   }
 
   #handleDeleteCommentClick = (commentId) => {
+
     this.#changeData(
       UserAction.DELETE_COMMENT,
       UpdateType.MINOR,
@@ -110,6 +117,7 @@ export default class FilmsCardPresenter {
   }
 
   #handleAddCommentKeyDown = (emoji, text) => {
+
     this.#changeData(
       UserAction.ADD_COMMENT,
       UpdateType.MINOR,
@@ -134,6 +142,7 @@ export default class FilmsCardPresenter {
   }
 
   #setFilmCardHandler = () => {
+
     this.#filmCardComponent.setFilmCardClickHandler(() => {
       this.#renderFilmPopup();
     });
@@ -144,6 +153,7 @@ export default class FilmsCardPresenter {
   }
 
   #setFilmPopupHandler = () => {
+
     this.#filmPopupComponent.setInnerHandlers();
     this.#filmPopupComponent.setClosePopupClickHandler (() => {
       this.#closeFilmPopup(this.#filmPopupComponent);
@@ -157,6 +167,7 @@ export default class FilmsCardPresenter {
   }
 
   #closeFilmPopup = () => {
+
     remove(this.#filmPopupComponent);
     this.#filmPopupComponent.removeElement();
     document.body.classList.remove('hide-overflow');
@@ -178,10 +189,12 @@ export default class FilmsCardPresenter {
   }
 
   #renderFilmCard = () => {
+
     render(this.#filmContainer, this.#filmCardComponent);
   }
 
   resetView = () => {
+
     if (this.#mode !== Mode.FILM_CARD) {
       this.#closeFilmPopup();
       this.#mode = Mode.FILM_CARD;
@@ -189,6 +202,7 @@ export default class FilmsCardPresenter {
   }
 
   destroy = () => {
+
     remove(this.#filmCardComponent);
     this.#filmCardComponent.removeElement();
     remove(this.#filmPopupComponent);
@@ -197,6 +211,7 @@ export default class FilmsCardPresenter {
 
 
   init(film, comments, commentsStatus) {
+
     this.#film = film;
     this.#comments = comments;
     this.#commentsStatus = commentsStatus;
