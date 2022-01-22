@@ -20,7 +20,7 @@ export default class FilmsBoardPresenter {
   #siteHeaderContainer = null;
   #boardContainer = null;
   #filmsModel = null;
-  #filterModel = null;
+  #menuModel = null;
   #commentsModel = null;
   #api = null;
   #filmsSectionComponent = new FilmsSectionView();
@@ -40,12 +40,12 @@ export default class FilmsBoardPresenter {
   #isShowMoreButtonDeleted = false;
   #filmPresenter = new Map();
 
-  constructor(siteHeader, boardContainer, filmsModel, filterModel, commentsModel, api) {
+  constructor(siteHeader, boardContainer, filmsModel, menuModel, commentsModel, api) {
 
     this.#siteHeaderContainer = siteHeader;
     this.#boardContainer = boardContainer;
     this.#filmsModel = filmsModel;
-    this.#filterModel = filterModel;
+    this.#menuModel = menuModel;
     this.#commentsModel = commentsModel;
     this.#api = api;
 
@@ -56,7 +56,7 @@ export default class FilmsBoardPresenter {
     this.#handleShowMoreClick = this.#handleShowMoreClick.bind(this);
     this.#checkCountFilms = this.#checkCountFilms.bind(this);
 
-    this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#menuModel.addObserver(this.#handleModelEvent);
     this.#commentsModel.addObserver(this.#handleModelEvent);
     this.#filmsModel.addObserver(this.#handleModelEvent);
   }
@@ -161,7 +161,7 @@ export default class FilmsBoardPresenter {
 
   #getFilms = () => {
 
-    this.#filterType = this.#filterModel.getFilter();
+    this.#filterType = this.#menuModel.getMenuButton();
     const films = this.#filmsModel.getFilms();
     const filtredFilms = Array.from(filter[this.#filterType](films));
 
@@ -188,11 +188,11 @@ export default class FilmsBoardPresenter {
     const deleteIdCommentUpdateFilm = deletedCommentUpdateFilm.commentsId;
     const deleteCommentId = updateComment;
 
-    function getFilterCommentId(value) {
+    function getMenuButtonCommentId(value) {
       return value !== deleteCommentId;
     }
 
-    const filteredCommentId = deleteIdCommentUpdateFilm.filter(getFilterCommentId);
+    const filteredCommentId = deleteIdCommentUpdateFilm.filter(getMenuButtonCommentId);
     deletedCommentUpdateFilm.commentsId = filteredCommentId;
 
     this.#commentsModel.deleteComments(updateType, deletedCommentUpdateFilm, updateComment);

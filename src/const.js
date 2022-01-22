@@ -8,6 +8,8 @@ export const COMMENT_EMOJIS = [
 export const ESCAPE = 'Escape';
 export const ENTER = 'Enter';
 
+export const STATISTIC_BOARD = 'Statstic';
+
 export const START_STATISTIC_PERIOD = 'all-time';
 
 export const SortType = {

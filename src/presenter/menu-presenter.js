@@ -20,7 +20,7 @@ export default class MenuPresenter {
   }
 
   init() {
-    const filters = this._getFilters();
+    const filters = this._getMenuButton();
     const prevMenuComponent = this._menuComponent;
 
     this._menuComponent = new MenuView(filters, this._menuModel.getMenuButton());
@@ -52,7 +52,7 @@ export default class MenuPresenter {
     this._menuModel.setMenuButton(UpdateType.STATISTIC, STATISTIC_BOARD);
   }
 
-  _getFilters() {
+  _getMenuButton() {
     const films = this._filmsModel.getFilms();
 
     return [
