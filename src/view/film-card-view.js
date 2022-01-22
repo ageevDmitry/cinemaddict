@@ -1,13 +1,12 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract.js';
 
-const FILM_DESCRIPTION_LENGTH = 140;
+const FILM_DESCRIPTION_LENGTH_LIMIT = 140;
 const isFilmFlag = (flag) => (flag) ? 'film-card__controls-item--active' : '';
 
 export const createFilmCardViewTemplate = (film) => {
 
   const {poster, title, rating, releaseDate, runtime, genres, description, isWatchlist, isWatched, isFavorite} = film;
-  const limitDescription = `${description.substr(0, FILM_DESCRIPTION_LENGTH)}...`;
   const isWatchlistClassName = isFilmFlag(isWatchlist);
   const isWatchedClassName = isFilmFlag(isWatched);
   const isFavoriteClassName = isFilmFlag(isFavorite);
@@ -25,7 +24,7 @@ export const createFilmCardViewTemplate = (film) => {
           <span class="film-card__genre">${genres[0]}</span>
         </p>
         <img src="./${poster}" alt="" class="film-card__poster">
-        <p class="film-card__description">${limitDescription}</p>
+        <p class="film-card__description">${description.length > FILM_DESCRIPTION_LENGTH_LIMIT ? `${description.substr(0, FILM_DESCRIPTION_LENGTH_LIMIT)}...` : `${description}`}</p>
         <span class="film-card__comments">${filmCommentsCount} comments</span>
       </a>
       <div class="film-card__controls">
