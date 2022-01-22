@@ -6,18 +6,21 @@ const SuccessHTTPStatusRange = {
 };
 
 export default class Api {
+  #endPoint = null;
+  #authorization = null;
+
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
     this._authorization = authorization;
   }
 
   getFilms() {
-    return this._load({url: 'movies'})
+    return this.#load({url: 'movies'})
       .then(Api.toJSON);
   }
 
   updateFilm(film) {
-    return this._load({
+    return this.#load({
       url: `movies/${film.id}`,
       method: MethodApi.PUT,
       body: JSON.stringify(film),
@@ -28,12 +31,12 @@ export default class Api {
 
   getComments(film) {
 
-    return this._load({url: `comments/${film.id}`})
+    return this.#load({url: `comments/${film.id}`})
       .then(Api.toJSON);
   }
 
   addComment(comment, film) {
-    return this._load({
+    return this.#load({
       url: `comments/${film.id}`,
       method: MethodApi.POST,
       body: JSON.stringify(comment),
@@ -43,18 +46,18 @@ export default class Api {
   }
 
   deleteComment(CommentId) {
-    return this._load({
+    return this.#load({
       url: `comments/${CommentId}`,
       method: MethodApi.DELETE,
     });
   }
 
-  _load({
+  #load = ({
     url,
     method = MethodApi.GET,
     body = null,
     headers = new Headers(),
-  }) {
+  }) => {
     headers.append('Authorization', this._authorization);
 
     return fetch(
