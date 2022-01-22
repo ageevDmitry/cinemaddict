@@ -8,12 +8,14 @@ const createUserRankViewTemplate = (userRank) => (
 );
 
 export default class UserRankView extends AbstractView {
+  #userRank = null;
+
   constructor(userRank) {
     super();
-    this._userRank = userRank;
+    this.#userRank = userRank;
   }
 
   getTemplate() {
-    return createUserRankViewTemplate(this._userRank);
+    return createUserRankViewTemplate(this.#userRank);
   }
 }

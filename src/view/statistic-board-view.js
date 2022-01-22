@@ -139,40 +139,43 @@ const createChartElement = (statisticCtx, data) => {
 };
 
 export default class StatisticBoardView extends Smart {
+  #films = null;
+  #userRank =  null;
+  #filterFilms = null;
+  #filmsChart = null;
+  #chartLabels = null;
+  #chartData = null;
+  #topGenre = null;
+  #wathedFilmsCount = null;
+  #totalDuration = null;
+  #statisticPeriod = START_STATISTIC_PERIOD;
+
   constructor(films, userRank) {
     super();
 
-    this._films = filter[FilterType.HISTORY](films);
-    this._filterFilms = null;
-    this._userRank =  userRank;
-    this._filmsChart = null;
-    this._chartLabels = null;
-    this._chartData = null;
-    this._topGenre = null;
-    this._wathedFilmsCount = null;
-    this._totalDuration = null;
-    this._statisticPeriod = START_STATISTIC_PERIOD;
+    this.#films = filter[FilterType.HISTORY](films);
+    this.#userRank =  userRank;
 
-    this._getData();
+    this.#getData();
 
-    this._choiceStatisticPeriod = this._choiceStatisticPeriod.bind(this);
+    this.#choiceStatisticPeriod = this.#choiceStatisticPeriod.bind(this);
   }
 
   getTemplate() {
-    return createStatisticBoardViewTemplate(this._userRank, this._wathedFilmsCount, this._totalDuration, this._topGenre, this._statisticPeriod);
+    return createStatisticBoardViewTemplate(this.#userRank, this.#wathedFilmsCount, this.#totalDuration, this.#topGenre, this.#statisticPeriod);
   }
 
-  _choiceStatisticPeriod(evt) {
+  #choiceStatisticPeriod = (evt) => {
     evt.preventDefault();
-    this._statisticPeriod = evt.target.value;
-    this._getData();
-    this.updateData(this._filterFilms);
+    this.#statisticPeriod = evt.target.value;
+    this.#getData();
+    this.updateData(this.#filterFilms);
     this.renderChart();
-    this._setCharts();
+    this.#setCharts();
   }
 
   setStatisticPeriodClickHandlers() {
-    this.getElement().querySelector('.statistic__filters').addEventListener('change', this._choiceStatisticPeriod);
+    this.getElement().querySelector('.statistic__filters').addEventListener('change', this.#choiceStatisticPeriod);
   }
 
   restoreHandlers() {
@@ -180,32 +183,32 @@ export default class StatisticBoardView extends Smart {
   }
 
   renderChart() {
-    this._setCharts();
+    this.#setCharts();
   }
 
-  _setCharts() {
+  #setCharts = () => {
     const statisticCtx = this.getElement().querySelector('.statistic__chart');
-    this._filmsChart = createChartElement(statisticCtx, this._chartData);
+    this.#filmsChart = createChartElement(statisticCtx, this.#chartData);
   }
 
-  _getData() {
+  #getData = () => {
 
-    if (this._statisticPeriod !== START_STATISTIC_PERIOD) {
-      this._filterFilms = this._films.filter((film) => isBetweenDate(film.watchingDate, this._statisticPeriod));
+    if (this.#statisticPeriod !== START_STATISTIC_PERIOD) {
+      this.#filterFilms = this.#films.filter((film) => isBetweenDate(film.watchingDate, this.#statisticPeriod));
     } else {
-      this._filterFilms = this._films;
+      this.#filterFilms = this.#films;
     }
 
-    if (this._filterFilms.length !== 0) {
-      this._chartData = getChartData(this._filterFilms);
-      this._topGenre = getTopGenre(this._chartData);
-      this._wathedFilmsCount = filter[FilterType.HISTORY](this._filterFilms).length;
-      this._totalDuration = getChartDuration(this._filterFilms);
+    if (this.#filterFilms.length !== 0) {
+      this.#chartData = getChartData(this.#filterFilms);
+      this.#topGenre = getTopGenre(this.#chartData);
+      this.#wathedFilmsCount = filter[FilterType.HISTORY](this.#filterFilms).length;
+      this.#totalDuration = getChartDuration(this.#filterFilms);
     } else {
-      this._chartData = null;
-      this._topGenre = null;
-      this._wathedFilmsCount = null;
-      this._totalDuration = null;
+      this.#chartData = null;
+      this.#topGenre = null;
+      this.#wathedFilmsCount = null;
+      this.#totalDuration = null;
     }
   }
 }

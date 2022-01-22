@@ -19,18 +19,20 @@ const createSortFilmsViewTemplate = (currentSortType) => {
 };
 
 export default class SortFilmsView extends AbstractView {
+  #currentSortType = null;
+
   constructor(currentSortType) {
     super();
 
-    this._currentSortType = currentSortType;
-    this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
+    this.#currentSortType = currentSortType;
+    this.#sortTypeChangeHandler = this.#sortTypeChangeHandler.bind(this);
   }
 
   getTemplate() {
-    return createSortFilmsViewTemplate(this._currentSortType);
+    return createSortFilmsViewTemplate(this.#currentSortType);
   }
 
-  _sortTypeChangeHandler(evt) {
+  #sortTypeChangeHandler = (evt) => {
     if (evt.target.tagName !== 'A') {
       return;
     }
@@ -42,6 +44,6 @@ export default class SortFilmsView extends AbstractView {
 
   setSortTypeChangeHandler(callback) {
     this._callback.sortTypeChange = callback;
-    this.getElement().addEventListener('click', this._sortTypeChangeHandler);
+    this.getElement().addEventListener('click', this.#sortTypeChangeHandler);
   }
 }

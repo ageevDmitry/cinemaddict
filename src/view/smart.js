@@ -1,9 +1,11 @@
 import Abstract from './abstract';
 
 export default class Smart extends Abstract {
+  #data = null;
+
   constructor() {
     super();
-    this._data = {};
+    this.#data = {};
   }
 
   updateElement() {
@@ -26,9 +28,9 @@ export default class Smart extends Abstract {
       return;
     }
 
-    this._data = Object.assign(
+    this.#data = Object.assign(
       {},
-      this._data,
+      this.#data,
       update,
     );
 
