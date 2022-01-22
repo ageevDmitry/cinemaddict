@@ -28,9 +28,9 @@ export default class Smart extends Abstract {
       return;
     }
 
-    this.#data = Object.assign(
+    this._data = Object.assign(
       {},
-      this.#data,
+      this._data,
       update,
     );
 

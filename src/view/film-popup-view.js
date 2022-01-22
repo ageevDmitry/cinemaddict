@@ -180,11 +180,6 @@ export default class FilmPopupView extends SmartView {
   #film = null;
   #comments = null;
   #commentsStatus = null;
-  #data = {
-    emoji: null,
-    text: null,
-  };
-
   #deleteCommentId = null;
   #isTextAreaDisabled = false;
 
@@ -193,6 +188,10 @@ export default class FilmPopupView extends SmartView {
     this.#film = film;
     this.#comments = comments;
     this.#commentsStatus = commentsStatus;
+    this._data = {
+      emoji: null,
+      text: null,
+    };
 
     this.#inputTextComment = this.#inputTextComment.bind(this);
     this.#choiceEmojiComment = this.#choiceEmojiComment.bind(this);
@@ -207,12 +206,12 @@ export default class FilmPopupView extends SmartView {
   }
 
   getTemplate() {
-    return createFilmPopupViewTemplate(this.#film, this.#comments, this.#data, this.#commentsStatus, this.#deleteCommentId, this.#isTextAreaDisabled);
+    return createFilmPopupViewTemplate(this.#film, this.#comments, this._data, this.#commentsStatus, this.#deleteCommentId, this.#isTextAreaDisabled);
   }
 
   #inputTextComment = (evt) => {
 
-    this.#data.text = he.encode(evt.target.value);
+    this._data.text = he.encode(evt.target.value);
   }
 
   #choiceEmojiComment = (evt) => {
@@ -256,12 +255,12 @@ export default class FilmPopupView extends SmartView {
 
     if (evt.key === ENTER && evt.ctrlKey) {
 
-      if (this.#data.emoji === null || this.#data.text === null) {
+      if (this._data.emoji === null || this._data.text === null) {
         return;
       }
 
       evt.preventDefault();
-      this._callback.addCommentKeyDown(this.#data.emoji, this.#data.text);
+      this._callback.addCommentKeyDown(this._data.emoji, this._data.text);
       this.#isTextAreaDisabled = true;
       this.updateElement();
       document.removeEventListener('keydown', this.#addCommentKeyDownHandler);
