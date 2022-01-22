@@ -1,5 +1,5 @@
 import AbstractView from './abstract.js';
-import {STATISTIC_BOARD} from '../const.js';
+import {STATISTIC_BOARD, FilterType} from '../const.js';
 
 const createMenuViewTemplate = (filters, currentMenuButton) => {
 
@@ -9,7 +9,7 @@ const createMenuViewTemplate = (filters, currentMenuButton) => {
     return (
       `<a href="#${type}" class="main-navigation__item ${type === currentFilterTypeLink ? 'main-navigation__item--active' : ''}" data-filter-type="${type}">
       ${name}
-      ${type !== 'all' ? `<span class="main-navigation__item-count">${count}</span>` : ''}</a>`
+      ${type !== FilterType.ALL_MOVIES ? `<span class="main-navigation__item-count" data-filter-type="${type}">${count}</span>` : ''}</a>`
     );
   };
 
