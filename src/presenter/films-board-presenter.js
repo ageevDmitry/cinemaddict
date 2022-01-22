@@ -110,7 +110,7 @@ export default class FilmsBoardPresenter {
       case UpdateType.MAJOR:
         this.#isShowMoreButtonDeleted = false;
         this.#renderedFilmCount = CARD_FILMS_COUNT_PER_STEP;
-        this.#clearBoard({resetRenderedFilmCount: true, resetSortType: true});
+        this.#clearBoard({resetSortType: true});
         this.#renderBoard();
         break;
       case UpdateType.INIT:
@@ -121,7 +121,7 @@ export default class FilmsBoardPresenter {
         this.#renderBoard();
         break;
       case UpdateType.STATISTIC:
-        this.#clearBoard({resetRenderedFilmCount: true, resetSortType: true});
+        this.#clearBoard({resetSortType: true});
         this.#renderStatisticBoard();
     }
   }
@@ -139,7 +139,7 @@ export default class FilmsBoardPresenter {
     this.#currentSortType = sortType;
     this.#renderedFilmCount = CARD_FILMS_COUNT_PER_STEP;
 
-    this.#clearBoard({resetRenderedFilmCount: true});
+    this.#clearBoard();
     this.#renderBoard();
   }
 
@@ -203,7 +203,7 @@ export default class FilmsBoardPresenter {
     const popup = document.querySelector('.film-details');
 
     if (!popup) {
-      this.#clearBoard({resetRenderedFilmCount: true});
+      this.#clearBoard();
       this.#renderBoard();
     }
   }
@@ -243,7 +243,7 @@ export default class FilmsBoardPresenter {
     }
   }
 
-  #clearBoard = ({resetRenderedFilmCount = false, resetSortType = false} = {}) => {
+  #clearBoard = ({resetSortType = false} = {}) => {
 
     this.#filmPresenter.forEach((presenter) => presenter.destroy());
     this.#filmPresenter.clear();
@@ -256,12 +256,8 @@ export default class FilmsBoardPresenter {
       remove(this.#statisticBoardComponent);
     }
 
-    if (resetRenderedFilmCount) {
-      this.#renderedFilmCount = CARD_FILMS_COUNT_PER_STEP;
-    } else {
-      const filmCount = this.#getFilms().length;
-      this.#renderedFilmCount = Math.min(filmCount, this.#renderedFilmCount);
-    }
+    const filmCount = this.#getFilms().length;
+    this.#renderedFilmCount = Math.min(filmCount, this.#renderedFilmCount);
 
     if (resetSortType) {
       this.#currentSortType = SortType.DEFAULT;
