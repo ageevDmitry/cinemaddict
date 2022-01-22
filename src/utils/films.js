@@ -1,6 +1,11 @@
+
+import {getRandomInteger} from '../utils/common.js';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 dayjs.extend(isBetween);
+
+const FILM_STATISTIC_MIN = 100000;
+const FILM_STATISTIC_MAX = 200000;
 
 export const getChartData = (films) => {
   const chartData = films.map((film) => film.genres)
@@ -68,3 +73,5 @@ export const isBetweenDate = (watchingDate, period) => {
   const startingPoint = dayjs(new Date()).subtract(1, period).format();
   return dayjs(watchingDate).isBetween(dayjs(new Date()), startingPoint);
 };
+
+export const generateStatistic = () => getRandomInteger(FILM_STATISTIC_MIN, FILM_STATISTIC_MAX);

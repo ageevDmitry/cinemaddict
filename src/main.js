@@ -1,6 +1,6 @@
 import FooterStatisticView from './view/footer-statistic-view.js';
 import {render} from './utils/render.js';
-import {generateStatistic} from './mock/statistic.js';
+import {generateStatistic} from './utils/films.js';
 import {AUTHORIZATION, END_POINT} from './const.js';
 import FilmsModel from './model/films-model.js';
 import MenuModel from './model/menu-model';
