@@ -4,56 +4,59 @@ import {filter} from '../utils/filter.js';
 import {FilterType, UpdateType, STATISTIC_BOARD} from '../const.js';
 
 export default class MenuPresenter {
+  #menuContainer = null;
+  #menuModel = null;
+  #filmsModel = null;
+  #menuComponent = null;
+
   constructor(menuContainer, menuModel, filmsModel) {
-    this._menuContainer = menuContainer;
-    this._menuModel = menuModel;
-    this._filmsModel = filmsModel;
+    this.#menuContainer = menuContainer;
+    this.#menuModel = menuModel;
+    this.#filmsModel = filmsModel;
 
-    this._menuComponent = null;
+    this.#handleModelEvent = this.#handleModelEvent.bind(this);
+    this.#handleFilterTypeChange = this.#handleFilterTypeChange.bind(this);
+    this.#handleStatisticRender = this.#handleStatisticRender.bind(this);
 
-    this._handleModelEvent = this._handleModelEvent.bind(this);
-    this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
-    this._handleStatisticRender = this._handleStatisticRender.bind(this);
-
-    this._filmsModel.addObserver(this._handleModelEvent);
-    this._menuModel.addObserver(this._handleModelEvent);
+    this.#filmsModel.addObserver(this.#handleModelEvent);
+    this.#menuModel.addObserver(this.#handleModelEvent);
   }
 
   init() {
-    const filters = this._getFilters();
-    const prevMenuComponent = this._menuComponent;
+    const filters = this.#getMenuButton();
+    const prevMenuComponent = this.#menuComponent;
 
-    this._menuComponent = new MenuView(filters, this._menuModel.getMenuButton());
-    this._menuComponent.setFilterTypeClickHandler(this._handleFilterTypeChange);
-    this._menuComponent.setStatisticClickHandler(this._handleStatisticRender);
+    this.#menuComponent = new MenuView(filters, this.#menuModel.getMenuButton());
+    this.#menuComponent.setFilterTypeClickHandler(this.#handleFilterTypeChange);
+    this.#menuComponent.setStatisticClickHandler(this.#handleStatisticRender);
 
     if (prevMenuComponent === null) {
-      render(this._menuContainer, this._menuComponent);
+      render(this.#menuContainer, this.#menuComponent);
       return;
     }
 
-    replace(this._menuComponent, prevMenuComponent);
+    replace(this.#menuComponent, prevMenuComponent);
     remove(prevMenuComponent);
   }
 
-  _handleModelEvent() {
+  #handleModelEvent = () => {
     this.init();
   }
 
-  _handleFilterTypeChange(filterType) {
-    if (this._menuModel.getMenuButton() === filterType) {
+  #handleFilterTypeChange = (filterType) => {
+    if (this.#menuModel.getMenuButton() === filterType) {
       return;
     }
 
-    this._menuModel.setMenuButton(UpdateType.MAJOR, filterType);
+    this.#menuModel.setMenuButton(UpdateType.MAJOR, filterType);
   }
 
-  _handleStatisticRender() {
-    this._menuModel.setMenuButton(UpdateType.STATISTIC, STATISTIC_BOARD);
+  #handleStatisticRender = () => {
+    this.#menuModel.setMenuButton(UpdateType.STATISTIC, STATISTIC_BOARD);
   }
 
-  _getFilters() {
-    const films = this._filmsModel.getFilms();
+  #getMenuButton = () => {
+    const films = this.#filmsModel.getFilms();
 
     return [
       {

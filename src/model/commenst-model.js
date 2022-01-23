@@ -1,40 +1,42 @@
 import AbstractObserver from '../utils/abstract-observer.js';
 
 export default class CommentsModel extends AbstractObserver {
+  #comments = null;
+
   constructor() {
     super();
-    this._comments = [];
+    this.#comments = [];
   }
 
   setComments(updateType, updateFilm, comments) {
-    this._comments = comments.slice();
+    this.#comments = comments.slice();
 
     this._notify(updateType, updateFilm);
   }
 
   getComments() {
-    return this._comments;
+    return this.#comments;
   }
 
   addComments(updateType, updateFilm, newComment) {
-    this._comments = [
+    this.#comments = [
       newComment,
-      ...this._comments,
+      ...this.#comments,
     ];
 
     this._notify(updateType, updateFilm, newComment);
   }
 
   deleteComments(updateType, updateFilm, updateCommentId) {
-    const index = this._comments.findIndex((comment) => comment.id === updateCommentId);
+    const index = this.#comments.findIndex((comment) => comment.id === updateCommentId);
 
     if (index === -1) {
       throw new Error('Can\'t delete unexisting film');
     }
 
-    this._comments = [
-      ...this._comments.slice(0, index),
-      ...this._comments.slice(index + 1),
+    this.#comments = [
+      ...this.#comments.slice(0, index),
+      ...this.#comments.slice(index + 1),
     ];
 
     this._notify(updateType, updateFilm, updateCommentId);

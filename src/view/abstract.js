@@ -1,12 +1,15 @@
 import {createElement} from '../utils/render.js';
 
+const SHAKE_ANIMATION_TIMEOUT = 600;
+
 export default class Abstract {
+  #element = null;
+
   constructor() {
     if (new.target === Abstract) {
       throw new Error('Can\'t instantiate Abstract, only concrete one.');
     }
 
-    this._element = null;
     this._callback = {};
   }
 
@@ -15,14 +18,21 @@ export default class Abstract {
   }
 
   getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
+    if (!this.#element) {
+      this.#element = createElement(this.getTemplate());
     }
 
-    return this._element;
+    return this.#element;
   }
 
   removeElement() {
-    this._element = null;
+    this.#element = null;
+  }
+
+  shake() {
+    this.#element.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    setTimeout(() => {
+      this.#element.style.animation = '';
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 }

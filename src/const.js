@@ -6,6 +6,9 @@ export const COMMENT_EMOJIS = [
 ];
 
 export const ESCAPE = 'Escape';
+export const ENTER = 'Enter';
+
+export const STATISTIC_BOARD = 'Statstic';
 
 export const START_STATISTIC_PERIOD = 'all-time';
 
@@ -23,10 +26,10 @@ export const UserAction = {
 };
 
 export const UpdateType = {
-  PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
   INIT: 'INIT',
+  STATISTIC: 'STATISTIC',
 };
 
 export const FilterType = {
@@ -47,10 +50,18 @@ export const MethodApi = {
   POST: 'POST',
 };
 
-export const StatisticRadioButton = [
+export const statisticRadioButtons = [
   { type : 'all-time', name : 'All time'},
   { type : 'today', name : 'Today'},
   { type : 'week', name : 'Week'},
   { type : 'month', name : 'Month'},
   { type : 'year', name : 'Year'},
 ];
+
+export const CommentsStatus = {
+  COMMENTS_LOAD: 'COMMENTS_LOAD',
+  COMMENTS_NO_LOAD: 'COMMENTS_NO_LOAD',
+  COMMENTS_NO_SEND: 'COMMENTS_NO_SEND',
+  COMMENTS_DELETING: 'COMMENTS_DELETING',
+  COMMENT_NO_DELETE: 'COMMENT_NO_DELETE',
+};

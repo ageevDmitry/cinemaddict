@@ -19,12 +19,14 @@ const createNoFilmsViewTemplate = (filterType) => {
 };
 
 export default class NoFilmsView extends AbstractView {
-  constructor(data) {
+  #filterType = null;
+
+  constructor(filterType) {
     super();
-    this._data = data;
+    this.#filterType = filterType;
   }
 
   getTemplate() {
-    return createNoFilmsViewTemplate(this._data);
+    return createNoFilmsViewTemplate(this.#filterType);
   }
 }

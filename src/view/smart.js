@@ -1,9 +1,11 @@
 import Abstract from './abstract';
 
 export default class Smart extends Abstract {
+  #data = null;
+
   constructor() {
     super();
-    this._data = {};
+    this.#data = {};
   }
 
   updateElement() {
@@ -39,3 +41,4 @@ export default class Smart extends Abstract {
     throw new Error('Abstract method not implemented: restoreHandlers');
   }
 }
+

@@ -5,12 +5,14 @@ const createFooterStatisticViewTemplate = (filmStatistic) => (
 );
 
 export default class FooterStatisticView extends AbstractView {
+  #filmStatistic = null;
+
   constructor(filmStatistic) {
     super();
-    this._filmStatistic = filmStatistic;
+    this.#filmStatistic = filmStatistic;
   }
 
   getTemplate() {
-    return createFooterStatisticViewTemplate(this._filmStatistic);
+    return createFooterStatisticViewTemplate(this.#filmStatistic);
   }
 }
