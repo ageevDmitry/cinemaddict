@@ -11,7 +11,7 @@ import StatisticBoardView from '../view/statistic-board-view.js';
 import {render, remove} from '../utils/render.js';
 import {sortFilmsDate, sortFilmsRating} from '../utils/common.js';
 import {filter} from '../utils/filter.js';
-import {SortType, UpdateType, UserAction, FilterType, CommentsStatus} from '../const.js';
+import {SortType, UpdateType, UserAction, FilterType, CommentsStatus, STATISTIC_BOARD} from '../const.js';
 import {generateUserRank} from '../utils/user-rank.js';
 
 const CARD_FILMS_COUNT_PER_STEP = 5;
@@ -163,16 +163,20 @@ export default class FilmsBoardPresenter {
 
     this.#filterType = this.#menuModel.getMenuButton();
     const films = this.#filmsModel.getFilms();
-    const filtredFilms = Array.from(filter[this.#filterType](films));
 
-    switch (this.#currentSortType) {
-      case SortType.DEFAULT:
-        return filtredFilms;
-      case SortType.DATE:
-        return filtredFilms.sort(sortFilmsDate);
-      case SortType.RATING:
-        return filtredFilms.sort(sortFilmsRating);
+    if (this.#filterType !== STATISTIC_BOARD) {
+      const filtredFilms = Array.from(filter[this.#filterType](films));
+
+      switch (this.#currentSortType) {
+        case SortType.DEFAULT:
+          return filtredFilms;
+        case SortType.DATE:
+          return filtredFilms.sort(sortFilmsDate);
+        case SortType.RATING:
+          return filtredFilms.sort(sortFilmsRating);
+      }
     }
+    return films;
   }
 
   #getComments = () => {

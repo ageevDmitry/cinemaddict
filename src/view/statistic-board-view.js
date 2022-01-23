@@ -142,8 +142,6 @@ export default class StatisticBoardView extends Smart {
   #films = null;
   #userRank =  null;
   #filterFilms = null;
-  #filmsChart = null;
-  #chartLabels = null;
   #chartData = null;
   #topGenre = null;
   #wathedFilmsCount = null;
@@ -188,7 +186,7 @@ export default class StatisticBoardView extends Smart {
 
   #setCharts = () => {
     const statisticCtx = this.getElement().querySelector('.statistic__chart');
-    this.#filmsChart = createChartElement(statisticCtx, this.#chartData);
+    createChartElement(statisticCtx, this.#chartData);
   }
 
   #getData = () => {
