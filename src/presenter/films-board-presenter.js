@@ -138,6 +138,7 @@ export default class FilmsBoardPresenter {
     }
     this.#currentSortType = sortType;
     this.#renderedFilmCount = CARD_FILMS_COUNT_PER_STEP;
+    this.#isShowMoreButtonDeleted = false;
 
     this.#clearBoard();
     this.#renderBoard();
