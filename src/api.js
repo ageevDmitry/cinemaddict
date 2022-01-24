@@ -10,8 +10,8 @@ export default class Api {
   #authorization = null;
 
   constructor(endPoint, authorization) {
-    this._endPoint = endPoint;
-    this._authorization = authorization;
+    this.#endPoint = endPoint;
+    this.#authorization = authorization;
   }
 
   getFilms() {
@@ -58,10 +58,10 @@ export default class Api {
     body = null,
     headers = new Headers(),
   }) => {
-    headers.append('Authorization', this._authorization);
+    headers.append('Authorization', this.#authorization);
 
     return fetch(
-      `${this._endPoint}/${url}`,
+      `${this.#endPoint}/${url}`,
       {method, body, headers},
     )
       .then(Api.checkStatus)

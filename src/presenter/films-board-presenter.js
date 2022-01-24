@@ -1,12 +1,12 @@
 import FilmsCardPresenter from './film-card-presenter.js';
 import UserRankView from '../view/user-rank-view.js';
-import SortingView from '../view/sorting-view.js';
+import SortFilmsView from '../view/sort-films-view.js';
 import FilmsSectionView from '../view/films-section-view.js';
 import FilmsListView from '../view/films-list-view.js';
 import FilmsContainerView from '../view/films-container-view.js';
 import ButtonShowMoreView from '../view/button-show-more-view.js';
 import NoFilmsView from '../view/no-films-view.js';
-import LoadingView from '../view/loading.js';
+import LoadingView from '../view/loading-view.js';
 import StatisticBoardView from '../view/statistic-board-view.js';
 import {render, remove} from '../utils/render.js';
 import {sortFilmsDate, sortFilmsRating} from '../utils/common.js';
@@ -289,7 +289,7 @@ export default class FilmsBoardPresenter {
       this.#sortingComponent = null;
     }
 
-    this.#sortingComponent = new SortingView(this.#currentSortType);
+    this.#sortingComponent = new SortFilmsView(this.#currentSortType);
 
     render(this.#boardContainer, this.#sortingComponent);
     this.#sortingComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);

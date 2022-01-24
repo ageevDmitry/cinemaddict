@@ -1,6 +1,7 @@
 import {createElement} from '../utils/render.js';
 
 const SHAKE_ANIMATION_TIMEOUT = 600;
+const MILISECONDS_COUNT = 1000;
 
 export default class Abstract {
   #element = null;
@@ -30,7 +31,7 @@ export default class Abstract {
   }
 
   shake() {
-    this.#element.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    this.#element.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / MILISECONDS_COUNT}s`;
     setTimeout(() => {
       this.#element.style.animation = '';
     }, SHAKE_ANIMATION_TIMEOUT);
