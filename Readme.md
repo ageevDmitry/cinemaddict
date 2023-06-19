@@ -1,6 +1,6 @@
 # Сервис поиска кино cinemaddict.
 
-Проект разрабатывался в рамках прохождения интенсива "React. Разработка сложных клиентских приложений" в HTML-Academy [https://htmlacademy.ru/intensive/ecmascript](https://htmlacademy.ru/intensive/ecmascript).
+Проект разрабатывался в рамках прохождения интенсива "JavaScript. Архитектура клиентских приложений" в HTML-Academy [https://htmlacademy.ru/intensive/ecmascript](https://htmlacademy.ru/intensive/ecmascript).
 
 В ходе работы была разработана клиентская часть сервиса, состоящая из каталога, страницы описания фильма с формой для отправки отзыва.\
 На странице каталога разработаны такие элементы интерфейса как фильтр и сортировка.
