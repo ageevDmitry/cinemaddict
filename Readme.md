@@ -10,4 +10,5 @@
   
 Проект разрабатывался самостоятельно под руководством наставника по ТЗ и оценивался по принятым в HTML Academy критериям.
 Трудозатраты составили 130 часов.
-Проект размещен здесь [https://cinemaddict-orcin.vercel.app/](https://cinemaddict-orcin.vercel.app/).
+
+## Проект размещен здесь [https://cinemaddict-orcin.vercel.app/](https://cinemaddict-orcin.vercel.app/).
